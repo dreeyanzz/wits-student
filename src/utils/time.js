@@ -71,3 +71,21 @@ export function getDayName(dayCode) {
   };
   return DAY_NAME_MAP[dayCode] || dayCode;
 }
+
+/**
+ * Maps day code to array index
+ * @param {string} dayCode - Day code (M, T, W, TH, F, S, SU)
+ * @returns {number} Day index
+ */
+export function getDayIndex(dayCode) {
+  const DAY_CODE_MAP = {
+    M: 0,
+    T: 1,
+    W: 2,
+    TH: 3,
+    F: 4,
+    S: 5,
+    SU: 6,
+  };
+  return DAY_CODE_MAP[dayCode];
+}

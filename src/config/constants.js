@@ -114,3 +114,32 @@ export const DAY_NAME_MAP = {
   S: "Saturday",
   SU: "Sunday",
 };
+
+/**
+ * Time slots for schedule (generated dynamically)
+ * Populated by initializeTimeSlots() with 30-minute intervals
+ * @type {Array<string>}
+ */
+export const TIME_SLOTS = [];
+
+/**
+ * Initialize time slots array
+ * Generates 30-minute intervals from 7:30 AM to 9:00 PM
+ * Called once during application initialization
+ */
+export function initializeTimeSlots() {
+  TIME_SLOTS.length = 0; // Clear array
+  
+  for (let hour = 7; hour <= 21; hour++) {
+    for (let min = 0; min < 60; min += 30) {
+      if (hour === 7 && min === 0) continue;
+      if (hour === 21 && min > 0) break;
+      
+      const period = hour >= 12 ? "PM" : "AM";
+      const displayHour = hour > 12 ? hour - 12 : hour === 12 ? 12 : hour;
+      const minStr = min === 0 ? "00" : min.toString();
+      
+      TIME_SLOTS.push(`${displayHour}:${minStr} ${period}`);
+    }
+  }
+}

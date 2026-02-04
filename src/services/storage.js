@@ -166,3 +166,8 @@ export const setCurrentAcademicYearId = (id) => stateManager.set('currentAcademi
 
 export const getCurrentTermId = () => stateManager.get('currentTermId');
 export const setCurrentTermId = (id) => stateManager.set('currentTermId', id);
+
+// Generic getter for any key
+export const getItem = (key) => stateManager.get(key);
+// Generic setter for any key
+export const setItem = (key, value) => stateManager.set(key, value);

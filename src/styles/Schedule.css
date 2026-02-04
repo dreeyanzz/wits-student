@@ -1,0 +1,601 @@
+/* ===================================================================
+   WILDCAT ONE - SCHEDULE
+   Weekly Schedule Grid
+   =================================================================== */
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.semester-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.semester-selector label {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.semester-selector select {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.semester-selector select:hover {
+  border-color: var(--primary-green);
+}
+
+.semester-selector select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+.semester-info {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+.semester-info-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.95;
+  margin-bottom: 0.25rem;
+}
+
+.semester-info-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.schedule-scroll-hint {
+  display: none;
+  text-align: center;
+  padding: 0.5rem;
+  background: linear-gradient(90deg, transparent, #e6f7ff, transparent);
+  color: #0066cc;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  border-radius: var(--radius-md);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.schedule-grid-container {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #cbd5e0 #f7fafc; /* Firefox */
+}
+
+/* Custom scrollbar for webkit browsers */
+.schedule-grid-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.schedule-grid-container::-webkit-scrollbar-track {
+  background: #f7fafc;
+  border-radius: 4px;
+}
+
+.schedule-grid-container::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+
+.schedule-grid-container::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  gap: 0;
+  background: var(--border-secondary);
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  font-size: 12px;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  min-width: 800px;
+}
+
+/* ===================================================================
+   HEADERS
+   =================================================================== */
+.time-header,
+.day-header {
+  background: linear-gradient(to bottom, var(--bg-secondary) 0%, #ecf0f5 100%);
+  padding: 16px 10px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 13px;
+  border-bottom: 2px solid var(--border-primary);
+}
+
+/* ===================================================================
+   TIME COLUMN
+   =================================================================== */
+.time-column {
+  background: linear-gradient(
+    to right,
+    var(--bg-tertiary) 0%,
+    var(--bg-secondary) 100%
+  );
+  position: relative;
+  border-right: 2px solid var(--border-primary);
+  grid-column: 1;
+}
+
+.time-label {
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  color: var(--color-primary);
+  background: transparent;
+  padding: 0;
+  transform: translateY(-50%);
+  z-index: 20;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* ===================================================================
+   TIME SLOTS
+   =================================================================== */
+.time-slot {
+  background: var(--bg-primary);
+  min-height: 40px;
+  position: relative;
+  border-top: 1px solid var(--border-secondary);
+  border-left: 1px solid var(--border-secondary);
+  transition: background 0.15s ease;
+}
+
+.time-slot:hover {
+  background: var(--bg-tertiary);
+}
+
+/* ===================================================================
+   CLASS BLOCKS
+   =================================================================== */
+.class-block {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-left: 3px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: pointer;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.class-block:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  z-index: 15 !important;
+}
+
+.class-code {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 2px;
+  color: rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.3px;
+}
+
+.class-section {
+  font-size: 10px;
+  opacity: 0.8;
+  margin-bottom: 3px;
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 600;
+}
+
+.class-name {
+  font-size: 10.5px;
+  opacity: 0.88;
+  margin-bottom: var(--spacing-xs);
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.class-room {
+  font-size: 10px;
+  opacity: 0.75;
+  margin-top: auto;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+}
+
+/* ===================================================================
+   SCHEDULE MODAL
+   =================================================================== */
+.schedule-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.schedule-modal.show {
+  display: flex;
+}
+
+.schedule-modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--radius-xl);
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.schedule-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--color-secondary);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.schedule-modal-close:hover {
+  background: var(--bg-secondary);
+  color: var(--color-primary);
+}
+
+.schedule-modal-header {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.schedule-modal-subtitle {
+  font-size: 1rem;
+  color: var(--color-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.schedule-modal-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.5rem;
+}
+
+.schedule-modal-icon {
+  font-size: 1.25rem;
+}
+
+.schedule-modal-text {
+  font-size: 0.95rem;
+  color: var(--color-primary);
+}
+
+/* ===================================================================
+   TOOLTIP
+   =================================================================== */
+.custom-tooltip {
+  display: none;
+  position: fixed;
+  background: white;
+  border: 2px solid var(--border-primary);
+  border-left: 4px solid var(--primary-green);
+  border-radius: var(--radius-lg);
+  padding: 0.875rem 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  max-width: 300px;
+  pointer-events: none;
+  animation: tooltipFadeIn 0.2s ease;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tooltip-header {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--color-secondary);
+}
+
+.tooltip-icon {
+  font-size: 1rem;
+}
+
+/* ===================================================================
+   RESPONSIVE
+   =================================================================== */
+@media (max-width: 768px) {
+  .schedule-scroll-hint {
+    display: block;
+  }
+
+  .schedule-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .semester-selector {
+    width: 100%;
+  }
+
+  .semester-selector label {
+    font-size: 13px;
+  }
+
+  .semester-selector select {
+    flex: 1;
+    font-size: 13px;
+    padding: 0.625rem 0.875rem;
+  }
+
+  .semester-info {
+    padding: 1rem 1.25rem;
+  }
+
+  .semester-info-title {
+    font-size: 0.75rem;
+  }
+
+  .semester-info-text {
+    font-size: 0.95rem;
+  }
+
+  .btn-success {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 14px;
+  }
+
+  .schedule-grid-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+  }
+
+  .schedule-grid {
+    min-width: 800px;
+    font-size: 11px;
+  }
+
+  .time-header,
+  .day-header {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+
+  .time-label {
+    font-size: 11px;
+    right: 8px;
+  }
+
+  .class-block {
+    font-size: 10px;
+    padding: 6px;
+  }
+
+  .class-code {
+    font-size: 11px;
+  }
+
+  .class-section,
+  .class-name,
+  .class-room {
+    font-size: 9px;
+  }
+
+  .schedule-modal-content {
+    width: 95%;
+    padding: 1.5rem;
+    max-width: 400px;
+  }
+
+  .schedule-modal-header {
+    font-size: 1.125rem;
+  }
+
+  .schedule-modal-subtitle {
+    font-size: 0.9375rem;
+  }
+
+  .schedule-modal-row {
+    padding: 0.625rem;
+    gap: 0.625rem;
+  }
+
+  .schedule-modal-icon {
+    font-size: 1.125rem;
+  }
+
+  .schedule-modal-text {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .schedule-header {
+    gap: 0.5rem;
+  }
+
+  .semester-info {
+    padding: 0.875rem 1rem;
+  }
+
+  .semester-info-title {
+    font-size: 0.6875rem;
+  }
+
+  .semester-info-text {
+    font-size: 0.875rem;
+  }
+
+  .schedule-grid-container {
+    margin: 0 -0.75rem;
+    padding: 0 0.75rem;
+  }
+
+  .schedule-grid {
+    min-width: 700px;
+    font-size: 10px;
+  }
+
+  .time-header,
+  .day-header {
+    padding: 10px 6px;
+    font-size: 11px;
+  }
+
+  .time-label {
+    font-size: 10px;
+    right: 6px;
+  }
+
+  .class-block {
+    font-size: 9px;
+    padding: 5px;
+  }
+
+  .class-code {
+    font-size: 10px;
+    margin-bottom: 1px;
+  }
+
+  .class-section {
+    font-size: 8px;
+    margin-bottom: 2px;
+  }
+
+  .class-name {
+    font-size: 8.5px;
+    margin-bottom: 3px;
+  }
+
+  .class-room {
+    font-size: 8px;
+  }
+
+  .schedule-modal-content {
+    padding: 1.25rem;
+  }
+
+  .schedule-modal-close {
+    width: 36px;
+    height: 36px;
+    font-size: 1.75rem;
+  }
+
+  .schedule-modal-header {
+    font-size: 1rem;
+    padding-right: 2rem;
+  }
+
+  .schedule-modal-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .schedule-modal-row {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .schedule-modal-icon {
+    font-size: 1rem;
+  }
+
+  .schedule-modal-text {
+    font-size: 0.8125rem;
+  }
+}
