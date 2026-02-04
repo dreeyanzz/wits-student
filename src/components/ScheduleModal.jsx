@@ -1,5 +1,20 @@
 import { useEffect } from 'react';
-import { getDayName } from '../utils/time';
+
+/**
+ * Gets day name from code
+ */
+const getDayName = (code) => {
+  const dayMap = {
+    M: 'Monday',
+    T: 'Tuesday',
+    W: 'Wednesday',
+    TH: 'Thursday',
+    F: 'Friday',
+    S: 'Saturday',
+    SU: 'Sunday',
+  };
+  return dayMap[code] || code;
+};
 
 /**
  * Schedule Modal Component

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ApiService } from '../services/api';
 import { getItem } from '../services/storage';
 import { TIME_SLOTS, DAYS } from '../config/constants';
@@ -29,53 +29,23 @@ function Schedule() {
   const [showScrollHint, setShowScrollHint] = useState(true);
   
   const loadCounterRef = useRef(0);
-  const scrollContainerRef = useRef(null);
 
   /**
-   * Clear all course blocks from the grid
+   * Initial load of all available schedules
    */
-  const clearCourseBlocks = useCallback(() => {
-    // Clear all blocks from time slot cells
-    TIME_SLOTS.forEach((_, slotIndex) => {
-      DAYS.forEach((_, dayIndex) => {
-        const cell = document.getElementById(`slot-${dayIndex}-${slotIndex}`);
-        if (cell) {
-          while (cell.firstChild) {
-            cell.removeChild(cell.firstChild);
-          }
-        }
-      });
-    });
-  }, []);
-
   useEffect(() => {
     loadSchedules();
   }, []);
 
+  /**
+   * Load schedule data when selected semester changes
+   */
   useEffect(() => {
-    console.log('[Schedule] useEffect triggered:', { 
-      enrollmentsLength: allEnrollments.length, 
-      selectedScheduleIndex,
-      schedule: allEnrollments[selectedScheduleIndex]
-    });
-    
     if (allEnrollments.length > 0 && selectedScheduleIndex >= 0) {
       const schedule = allEnrollments[selectedScheduleIndex];
-      console.log('[Schedule] Loading schedule for:', schedule);
-      
-      // Clear existing blocks before loading new schedule
-      clearCourseBlocks();
-      
       loadScheduleData(schedule.yearId, schedule.termId, schedule.yearName, schedule.termName);
     }
-  }, [selectedScheduleIndex, allEnrollments, clearCourseBlocks]);
-
-  // Clear blocks when component unmounts
-  useEffect(() => {
-    return () => {
-      clearCourseBlocks();
-    };
-  }, [clearCourseBlocks]);
+  }, [selectedScheduleIndex, allEnrollments]);
 
   /**
    * Fetches all available year-term combinations from the API
@@ -88,8 +58,6 @@ function Schedule() {
     try {
       const userData = getItem('userData');
       const years = getItem('academicYears') || [];
-      
-      console.log('[Schedule] Loading schedules...', { userData, years });
 
       if (!userData || !userData.studentId) {
         throw new Error('User data not available');
@@ -104,10 +72,7 @@ function Schedule() {
       // For each year, get its available terms
       for (const year of years) {
         try {
-          console.log(`[Schedule] Fetching terms for year ${year.name}...`);
           const termsResult = await ApiService.get(`/api/student/${userData.studentId}/${year.id}/terms`);
-          
-          console.log(`[Schedule] Terms result for ${year.name}:`, termsResult);
           
           if (termsResult.status === 200 && termsResult.data?.items) {
             // Add each term as a schedule option
@@ -123,11 +88,9 @@ function Schedule() {
             });
           }
         } catch (error) {
-          console.error(`[Schedule] Error fetching terms for year ${year.name}:`, error);
+          console.error(`Error fetching terms for year ${year.name}:`, error);
         }
       }
-
-      console.log('[Schedule] All schedules collected:', allSchedules);
 
       // Reverse to show most recent first
       const reversedSchedules = allSchedules.reverse();
@@ -139,8 +102,6 @@ function Schedule() {
 
       if (myLoadId !== loadCounterRef.current) return;
 
-      console.log('[Schedule] Final schedules:', reversedSchedules);
-
       setAllEnrollments(reversedSchedules);
 
       if (reversedSchedules.length > 0) {
@@ -150,7 +111,7 @@ function Schedule() {
         setLoading(false);
       }
     } catch (error) {
-      console.error('[Schedule] Error in loadSchedules:', error);
+      console.error('Error in loadSchedules:', error);
       if (myLoadId === loadCounterRef.current) {
         setError(error.message || 'Failed to load schedules');
         setLoading(false);
@@ -211,27 +172,21 @@ function Schedule() {
       const userData = getItem('userData');
       const endpoint = `/api/student/${userData.studentId}/${yearId}/${termId}/schedule`;
       
-      console.log('[Schedule] Loading schedule data:', { yearId, termId, year, term, endpoint });
-      
       const result = await ApiService.get(endpoint);
-
-      console.log('[Schedule] Schedule data result:', result);
 
       if (myLoadId !== loadCounterRef.current) return;
 
       if (result.status === 200 && result.data?.items) {
-        console.log('[Schedule] Schedule loaded successfully:', result.data.items);
         setCourses(result.data.items);
         setYearName(year);
         setTermName(term);
         setLoading(false);
       } else {
-        console.error('[Schedule] Invalid schedule data:', result);
         setError('Failed to load schedule');
         setLoading(false);
       }
     } catch (error) {
-      console.error('[Schedule] Error in loadScheduleData:', error);
+      console.error('Error in loadScheduleData:', error);
       if (myLoadId === loadCounterRef.current) {
         setError(error.message || 'Failed to load schedule');
         setLoading(false);
@@ -349,66 +304,43 @@ function Schedule() {
   };
 
   /**
-   * Renders the schedule grid
+   * Render course blocks after grid is rendered
    */
-  const renderScheduleGrid = () => {
-    return (
-      <>
-        <div className="schedule-grid-container">
-          <div className="schedule-grid" id="scheduleGrid">
-            {/* Headers */}
-            <div className="time-header">Time</div>
-            {DAYS.map(day => (
-              <div key={day} className="day-header">{day}</div>
-            ))}
+  useEffect(() => {
+    if (loading || courses.length === 0) return;
 
-            {/* Empty first row */}
-            <div style={{ gridColumn: 1, background: 'linear-gradient(to right, #fafbfc 0%, #f8f9fb 100%)', borderRight: '2px solid #d5dce3', minHeight: '40px' }}></div>
-            {[...Array(7)].map((_, i) => (
-              <div key={i} style={{ background: 'white', borderTop: '1px solid #e8eef3', borderLeft: '1px solid #e8eef3', minHeight: '40px' }}></div>
-            ))}
+    // Small delay to ensure grid is fully rendered
+    const timer = setTimeout(() => {
+      renderCourseBlocks();
+    }, 50);
 
-            {/* Time column */}
-            <div className="time-column" style={{ gridRow: `3 / span ${TIME_SLOTS.length}`, height: `${TIME_SLOTS.length * 40}px` }}>
-              {TIME_SLOTS.map((time, index) => (
-                <div key={time} className="time-label" style={{ top: `${index * 40}px` }}>{time}</div>
-              ))}
-            </div>
-
-            {/* Time slots */}
-            {TIME_SLOTS.map((time, slotIndex) => (
-              DAYS.map((_, dayIndex) => (
-                <div 
-                  key={`slot-${dayIndex}-${slotIndex}`}
-                  className="time-slot" 
-                  data-day={dayIndex} 
-                  data-slot={slotIndex}
-                  id={`slot-${dayIndex}-${slotIndex}`}
-                ></div>
-              ))
-            ))}
-          </div>
-        </div>
-        
-        {/* Course blocks - rendered separately and will be appended to cells */}
-        {renderCourseBlocks()}
-      </>
-    );
-  };
+    return () => clearTimeout(timer);
+  }, [courses, loading, yearName, termName]);
 
   /**
-   * Renders course blocks on the schedule grid
+   * Renders course blocks on the schedule grid (DOM manipulation like vanilla)
    */
   const renderCourseBlocks = () => {
-    const blocks = [];
+    // Clear existing blocks first
+    TIME_SLOTS.forEach((_, slotIndex) => {
+      DAYS.forEach((_, dayIndex) => {
+        const cell = document.getElementById(`slot-${dayIndex}-${slotIndex}`);
+        if (cell) {
+          while (cell.firstChild) {
+            cell.removeChild(cell.firstChild);
+          }
+        }
+      });
+    });
 
-    courses.forEach((course, courseIdx) => {
+    // Place course blocks
+    courses.forEach(course => {
       if (!course.schedule) return;
 
-      course.schedule.forEach((sched, schedIdx) => {
+      course.schedule.forEach(sched => {
         if (!sched.day) return;
 
-        sched.day.forEach((dayObj, dayObjIdx) => {
+        sched.day.forEach(dayObj => {
           const dayIndex = getDayIndex(dayObj.code);
           if (dayIndex === undefined) return;
 
@@ -418,36 +350,46 @@ function Schedule() {
 
           if (slotIndex < 0) return;
 
+          const cell = document.getElementById(`slot-${dayIndex}-${slotIndex}`);
+          if (!cell) return;
+
           const durationMinutes = endMinutes - startMinutes;
           const heightPx = (durationMinutes / 30) * 40 - 6;
           const offsetPx = ((startMinutes - 30) % 30) * (40 / 30);
           const color = getCourseColor(course.courseCode);
 
-          const blockKey = `block-${yearName}-${termName}-${courseIdx}-${schedIdx}-${dayObjIdx}`;
+          const block = document.createElement('div');
+          block.className = 'class-block';
+          block.style.background = color;
+          block.style.top = offsetPx + 'px';
+          block.style.height = heightPx + 'px';
 
-          blocks.push(
-            <CourseBlock
-              key={blockKey}
-              course={course}
-              schedule={sched}
-              dayIndex={dayIndex}
-              slotIndex={slotIndex}
-              heightPx={heightPx}
-              offsetPx={offsetPx}
-              color={color}
-              onModalOpen={setModalData}
-              onTooltipShow={(e) => {
-                setTooltipData({ course, schedule: sched, color });
-                setTooltipPosition({ x: e.clientX, y: e.clientY });
-              }}
-              onTooltipHide={() => setTooltipData(null)}
-            />
-          );
+          block.innerHTML = `
+            <div class="class-code">${course.courseCode}</div>
+            <div class="class-section">${course.section || 'N/A'}</div>
+            <div class="class-name">${course.description}</div>
+            <div class="class-room">📍 ${sched.roomName}</div>
+          `;
+
+          if (isMobileDevice()) {
+            block.addEventListener('click', (e) => {
+              e.stopPropagation();
+              setModalData({ course, schedule: sched });
+            });
+          } else {
+            block.addEventListener('mousemove', (e) => {
+              setTooltipData({ course, schedule: sched, color });
+              setTooltipPosition({ x: e.clientX, y: e.clientY });
+            });
+            block.addEventListener('mouseleave', () => {
+              setTooltipData(null);
+            });
+          }
+
+          cell.appendChild(block);
         });
       });
     });
-
-    return blocks;
   };
 
   // Render loading state
@@ -505,19 +447,49 @@ function Schedule() {
         </button>
       </div>
 
-      <div key={`schedule-${yearName}-${termName}`}>
-        {/* Scroll hint for mobile */}
-        {isMobileDevice() && showScrollHint && (
-          <div className="schedule-scroll-hint">
-            ☜ Swipe to see more days ☞
+      {/* Scroll hint for mobile */}
+      {isMobileDevice() && showScrollHint && (
+        <div className="schedule-scroll-hint">
+          ☜ Swipe to see more days ☞
+        </div>
+      )}
+
+      <div 
+        className="schedule-grid-container"
+        onScroll={() => setShowScrollHint(false)}
+      >
+        <div className="schedule-grid" id="scheduleGrid">
+          {/* Headers */}
+          <div className="time-header">Time</div>
+          {DAYS.map(day => (
+            <div key={day} className="day-header">{day}</div>
+          ))}
+
+          {/* Empty first row */}
+          <div style={{ gridColumn: 1, background: 'linear-gradient(to right, #fafbfc 0%, #f8f9fb 100%)', borderRight: '2px solid #d5dce3', minHeight: '40px' }}></div>
+          {[...Array(7)].map((_, i) => (
+            <div key={i} style={{ background: 'white', borderTop: '1px solid #e8eef3', borderLeft: '1px solid #e8eef3', minHeight: '40px' }}></div>
+          ))}
+
+          {/* Time column */}
+          <div className="time-column" style={{ gridRow: `3 / span ${TIME_SLOTS.length}`, height: `${TIME_SLOTS.length * 40}px` }}>
+            {TIME_SLOTS.map((time, index) => (
+              <div key={time} className="time-label" style={{ top: `${index * 40}px` }}>{time}</div>
+            ))}
           </div>
-        )}
-        <div 
-          ref={scrollContainerRef}
-          onScroll={() => setShowScrollHint(false)}
-          style={{ width: '100%' }}
-        >
-          {renderScheduleGrid()}
+
+          {/* Time slots (course blocks will be appended via DOM manipulation) */}
+          {TIME_SLOTS.map((time, slotIndex) => (
+            DAYS.map((_, dayIndex) => (
+              <div 
+                key={`slot-${dayIndex}-${slotIndex}`}
+                className="time-slot" 
+                data-day={dayIndex} 
+                data-slot={slotIndex}
+                id={`slot-${dayIndex}-${slotIndex}`}
+              ></div>
+            ))
+          ))}
         </div>
       </div>
 
@@ -541,71 +513,6 @@ function Schedule() {
         />
       )}
     </section>
-  );
-}
-
-/**
- * Course Block Component - Uses direct DOM manipulation after mount
- */
-function CourseBlock({ course, schedule, dayIndex, slotIndex, heightPx, offsetPx, color, onModalOpen, onTooltipShow, onTooltipHide }) {
-  const blockRef = useRef(null);
-  const isMountedRef = useRef(false);
-
-  useEffect(() => {
-    // Append block to the correct cell after render
-    const block = blockRef.current;
-    if (!block || isMountedRef.current) return;
-
-    const cell = document.getElementById(`slot-${dayIndex}-${slotIndex}`);
-    if (cell && block.parentElement) {
-      // Move from React root to grid cell
-      block.parentElement.removeChild(block);
-      cell.appendChild(block);
-      isMountedRef.current = true;
-    }
-  }, [dayIndex, slotIndex]);
-
-  const handleClick = (e) => {
-    if (isMobileDevice()) {
-      e.stopPropagation();
-      onModalOpen({ course, schedule });
-    }
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isMobileDevice()) {
-      onTooltipShow(e);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isMobileDevice()) {
-      onTooltipHide();
-    }
-  };
-
-  return (
-    <div
-      ref={blockRef}
-      className="class-block"
-      onClick={handleClick}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        background: color,
-        top: `${offsetPx}px`,
-        height: `${heightPx}px`,
-        position: 'absolute',
-        left: '3px',
-        right: '3px',
-        zIndex: 10
-      }}
-    >
-      <div className="class-code">{course.courseCode}</div>
-      <div className="class-section">{course.section || 'N/A'}</div>
-      <div className="class-name">{course.description}</div>
-      <div className="class-room">📍 {schedule.roomName}</div>
-    </div>
   );
 }
 
