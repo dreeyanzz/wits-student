@@ -3,6 +3,7 @@ import Login from './components/Login';
 import SessionRestoreOverlay from './components/SessionRestoreOverlay';
 import Dashboard from './components/Dashboard';
 import Schedule from './components/Schedule';
+import Grades from './components/Grades';
 import { AuthService } from './services/auth';
 import { initializeTimeSlots } from './config/constants';
 import './styles/App.css';
@@ -231,12 +232,7 @@ function App() {
       {/* Main Content Sections */}
       {activeSection === 'dashboard' && <Dashboard />}
       {activeSection === 'schedule' && <Schedule />}
-      {activeSection === 'grades' && (
-        <div className="section">
-          <h2 className="section-title">📊 Grades</h2>
-          <p>Grades section coming soon...</p>
-        </div>
-      )}
+      {activeSection === 'grades' && <Grades />}
       {activeSection === 'professors' && (
         <div className="section">
           <h2 className="section-title">👨‍🏫 Professors</h2>

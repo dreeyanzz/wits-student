@@ -1,0 +1,408 @@
+/* ===================================================================
+   WILDCAT ONE - GRADES
+   Academic grades table styles
+   =================================================================== */
+
+/* ===================================================================
+   HEADERS
+   =================================================================== */
+.grades-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.semester-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.semester-selector label {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.semester-selector select {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.semester-selector select:hover {
+  border-color: var(--cit-maroon);
+}
+
+.semester-selector select:focus {
+  outline: none;
+  border-color: var(--cit-maroon);
+  box-shadow: 0 0 0 3px rgba(122, 26, 61, 0.1);
+}
+
+/* ===================================================================
+   SEMESTER INFO
+   =================================================================== */
+.semester-info {
+  background: var(--bg-accent);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  border-left: 4px solid var(--cit-maroon);
+}
+
+.semester-info-title {
+  color: var(--cit-maroon);
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.semester-info-text {
+  color: var(--color-tertiary);
+  font-size: 13px;
+}
+
+.grades-scroll-hint {
+  display: none;
+  text-align: center;
+  padding: 0.5rem;
+  background: linear-gradient(90deg, transparent, #fff4e6, transparent);
+  color: #d97706;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  border-radius: var(--radius-md);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ===================================================================
+   TABLE STYLES
+   =================================================================== */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.grades-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-top: var(--spacing-lg);
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-size: 13px;
+  border: 1px solid var(--border-secondary);
+}
+
+.grades-table thead {
+  background: var(--bg-secondary);
+}
+
+.grades-table th {
+  padding: 14px var(--spacing-md);
+  text-align: left;
+  color: var(--color-primary);
+  font-weight: 600;
+  border-bottom: 2px solid var(--border-primary);
+}
+
+.grades-table th.center {
+  text-align: center;
+}
+
+.grades-table td {
+  padding: 14px var(--spacing-md);
+  border-bottom: 1px solid var(--border-secondary);
+  color: var(--color-primary);
+}
+
+.grades-table td.center {
+  text-align: center;
+}
+
+.grades-table tbody tr:hover {
+  background: var(--bg-secondary);
+  transition: background 0.15s ease;
+}
+
+/* ===================================================================
+   TABLE CONTENT STYLES
+   =================================================================== */
+.course-code {
+  font-family: "Courier New", "Consolas", monospace;
+  color: var(--cit-maroon);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.course-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.course-title {
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.course-professor {
+  color: var(--color-muted);
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* ===================================================================
+   GRADE COLORS
+   =================================================================== */
+.grade-cell {
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.grade-excellent {
+  color: var(--status-success);
+}
+
+.grade-good {
+  color: var(--status-success-light);
+}
+
+.grade-average {
+  color: var(--status-warning);
+}
+
+.grade-poor {
+  color: var(--status-warning-light);
+}
+
+.grade-failing {
+  color: var(--status-error);
+}
+
+/* ===================================================================
+   RESPONSIVE
+   =================================================================== */
+@media (max-width: 768px) {
+  .grades-scroll-hint {
+    display: block;
+  }
+
+  .grades-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .semester-selector {
+    width: 100%;
+  }
+
+  .semester-selector label {
+    font-size: 13px;
+  }
+
+  .semester-selector select {
+    flex: 1;
+    font-size: 13px;
+    padding: 0.625rem 0.875rem;
+  }
+
+  .semester-info {
+    padding: 1rem 1.25rem;
+  }
+
+  .semester-info-title {
+    font-size: 12px;
+  }
+
+  .semester-info-text {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .table-container {
+    margin: 0 -1rem;
+    padding: 0 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .grades-table {
+    font-size: 11px;
+    min-width: 700px;
+    table-layout: auto;
+  }
+
+  .grades-table th,
+  .grades-table td {
+    padding: 10px 6px;
+    white-space: nowrap;
+  }
+
+  .grades-table th:nth-child(1),
+  .grades-table td:nth-child(1) {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  .grades-table th:nth-child(2),
+  .grades-table td:nth-child(2) {
+    width: auto;
+    min-width: 200px;
+    white-space: normal;
+  }
+
+  .grades-table th:nth-child(3),
+  .grades-table td:nth-child(3) {
+    width: 50px;
+    min-width: 50px;
+  }
+
+  .grades-table th:nth-child(4),
+  .grades-table td:nth-child(4) {
+    width: 70px;
+    min-width: 70px;
+  }
+
+  .grades-table th:nth-child(5),
+  .grades-table td:nth-child(5) {
+    width: 70px;
+    min-width: 70px;
+  }
+
+  .grades-table th:nth-child(6),
+  .grades-table td:nth-child(6) {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  .course-code {
+    font-size: 11px;
+    display: block;
+  }
+
+  .course-title {
+    font-size: 11px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .course-professor {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  .grade-cell {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.125rem;
+  }
+
+  .grades-header {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .semester-info {
+    padding: 0.75rem 1rem;
+  }
+
+  .semester-info-title {
+    font-size: 10px;
+  }
+
+  .semester-info-text {
+    font-size: 10px;
+    line-height: 1.6;
+  }
+
+  .table-container {
+    margin: 0 -0.75rem;
+    padding: 0 0.75rem;
+  }
+
+  .grades-table {
+    font-size: 10px;
+    min-width: 650px;
+  }
+
+  .grades-table th,
+  .grades-table td {
+    padding: 8px 5px;
+  }
+
+  .grades-table th:nth-child(1),
+  .grades-table td:nth-child(1) {
+    width: 70px;
+    min-width: 70px;
+  }
+
+  .grades-table th:nth-child(2),
+  .grades-table td:nth-child(2) {
+    min-width: 180px;
+  }
+
+  .grades-table th:nth-child(3),
+  .grades-table td:nth-child(3) {
+    width: 45px;
+    min-width: 45px;
+  }
+
+  .grades-table th:nth-child(4),
+  .grades-table td:nth-child(4) {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  .grades-table th:nth-child(5),
+  .grades-table td:nth-child(5) {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  .grades-table th:nth-child(6),
+  .grades-table td:nth-child(6) {
+    width: 70px;
+    min-width: 70px;
+  }
+
+  .course-code {
+    font-size: 10px;
+  }
+
+  .course-title {
+    font-size: 10px;
+    line-height: 1.3;
+    margin-bottom: 3px;
+  }
+
+  .course-professor {
+    font-size: 9px;
+    line-height: 1.3;
+  }
+
+  .grade-cell {
+    font-size: 11px;
+  }
+}
