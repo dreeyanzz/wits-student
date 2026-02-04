@@ -6,6 +6,7 @@ import Schedule from './components/Schedule';
 import Grades from './components/Grades';
 import Professors from './components/Professors';
 import CourseOfferings from './components/CourseOfferings';
+import ChangePassword from './components/ChangePassword';
 import { AuthService } from './services/auth';
 import { initializeTimeSlots } from './config/constants';
 import './styles/App.css';
@@ -237,12 +238,7 @@ function App() {
       {activeSection === 'grades' && <Grades />}
       {activeSection === 'professors' && <Professors />}
       {activeSection === 'offerings' && <CourseOfferings />}
-      {activeSection === 'changePassword' && (
-        <div className="section">
-          <h2 className="section-title">🔐 Change Password</h2>
-          <p>Change Password section coming soon...</p>
-        </div>
-      )}
+      {activeSection === 'changePassword' && <ChangePassword />}
     </div>
   );
 }
