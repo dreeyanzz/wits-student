@@ -1,8 +1,13 @@
+/**
+ * Session Restore Overlay Component - React Migration
+ * Replicated from wildcat-one session overlay
+ */
+
 import React from 'react';
 import citLogo from '../assets/cit-logo.png';
-import '../styles/Login.css';
+import '../styles/SessionOverlay.css';
 
-const SessionRestoreOverlay = ({ message = 'Restoring your session...' }) => {
+const SessionRestoreOverlay = ({ text = 'Restoring your session...' }) => {
   return (
     <div className="session-restore-overlay">
       <div className="session-restore-content">
@@ -12,7 +17,7 @@ const SessionRestoreOverlay = ({ message = 'Restoring your session...' }) => {
           className="session-restore-logo" 
         />
         <div className="session-restore-spinner"></div>
-        <div className="session-restore-text">{message}</div>
+        <div className="session-restore-text">{text}</div>
       </div>
     </div>
   );

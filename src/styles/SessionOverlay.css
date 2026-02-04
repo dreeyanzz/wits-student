@@ -1,0 +1,102 @@
+/* ===================================================================
+   SESSION RESTORE OVERLAY - React Migration
+   Replicated from wildcat-one/styles/session-overlay.css
+   =================================================================== */
+
+.session-restore-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f8f5f0 0%, #faf7f2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+}
+
+.session-restore-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.session-restore-logo {
+  max-width: 320px;
+  width: 100%;
+  padding: 14px 22px;
+  animation: logoPulse 2s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}
+
+.session-restore-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #7a1a3d;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.session-restore-text {
+  color: #5a6c7d;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* ===================================================================
+   HERO TRANSITION TO LOGIN
+   =================================================================== */
+.session-restore-overlay.hero-to-login {
+  animation: overlayFadeOut 0.6s ease forwards 0.3s;
+}
+
+.session-restore-overlay.hero-to-login .session-restore-content {
+  animation: contentFadeOut 0.3s ease forwards;
+}
+
+@keyframes overlayFadeOut {
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes contentFadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ===================================================================
+   SIMPLE FADE FOR DASHBOARD
+   =================================================================== */
+.session-restore-overlay.simple-fade {
+  animation: simpleFade 0.4s ease forwards;
+}
+
+@keyframes simpleFade {
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
