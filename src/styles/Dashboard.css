@@ -1,0 +1,268 @@
+/* ===================================================================
+   DASHBOARD STYLES - Matching Original Wildcat One
+   =================================================================== */
+
+/* Main dashboard wrapper matching .section from original */
+.dashboard-section-wrapper {
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Section title - matching original size and style */
+.dashboard-section-wrapper .section-title {
+  font-size: 19px;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-lg);
+  font-weight: 600;
+}
+
+/* ===================================================================
+   STATS GRID - 4 cards in a row
+   =================================================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: linear-gradient(
+    135deg,
+    var(--bg-accent) 0%,
+    var(--bg-accent-light) 100%
+  );
+  border: 1.5px solid var(--border-tertiary);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: #e8d5c8;
+}
+
+.stat-icon {
+  font-size: 36px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--cit-maroon);
+  line-height: 1.2;
+  margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+/* ===================================================================
+   DASHBOARD SECTION - Today's Classes
+   =================================================================== */
+.dashboard-section {
+  margin-top: 28px;
+  padding-top: var(--spacing-xl);
+  border-top: 2px solid var(--border-secondary);
+}
+
+.dashboard-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.dashboard-section-title {
+  font-size: 17px;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* ===================================================================
+   TODAY'S CLASSES LIST
+   =================================================================== */
+.today-classes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.today-class-card {
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-secondary);
+  border-left: 4px solid var(--cit-maroon);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.today-class-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateX(4px);
+}
+
+.today-class-time {
+  color: var(--cit-maroon);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.today-class-code {
+  font-family: "Courier New", "Consolas", monospace;
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: var(--spacing-xs);
+}
+
+.today-class-name {
+  color: var(--color-tertiary);
+  font-size: 13px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.today-class-details {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.today-class-details span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.no-classes {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-muted);
+  font-size: 16px;
+  background: linear-gradient(
+    135deg,
+    var(--bg-accent) 0%,
+    var(--bg-accent-light) 100%
+  );
+  border-radius: var(--radius-lg);
+  border: 2px dashed var(--border-secondary);
+}
+
+/* ===================================================================
+   LOADING STATE
+   =================================================================== */
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-muted);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-secondary);
+  border-top-color: var(--cit-maroon);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===================================================================
+   ERROR STATE
+   =================================================================== */
+.error-message {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--status-error);
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ===================================================================
+   RESPONSIVE DESIGN
+   =================================================================== */
+
+/* Tablet - 3 columns */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile landscape - 2 columns */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .stat-card {
+    padding: var(--spacing-md);
+  }
+
+  .stat-icon {
+    font-size: 28px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .dashboard-section {
+    padding-top: var(--spacing-lg);
+  }
+
+  .today-class-details {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+}
+
+/* Mobile portrait - 1 column */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-section-wrapper .section-title {
+    font-size: 17px;
+  }
+
+  .dashboard-section-title {
+    font-size: 15px;
+  }
+}

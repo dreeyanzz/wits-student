@@ -1,64 +1,84 @@
 /* ===================================================================
-   WILDCAT ONE - APP STYLES (React)
-   Main application container styles
+   APP CONTAINER & LAYOUT
    =================================================================== */
 
-/* Reset & Base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
-  color: #2c3e50;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* App Container (for authenticated view) */
 .app-container {
+  width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f5f0 0%, #faf7f2 100%);
-  background-image:
-    linear-gradient(135deg, #f8f5f0 0%, #faf7f2 100%),
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 35px,
-      rgba(122, 26, 61, 0.02) 35px,
-      rgba(122, 26, 61, 0.02) 70px
-    );
   padding: 20px;
 }
 
-.app-header {
-  background: #ffffff;
-  padding: 24px;
-  margin-bottom: 24px;
-  border-top: 4px solid #7a1a3d;
-  border-radius: 8px;
+/* ===================================================================
+   HEADER
+   =================================================================== */
+.header {
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  border-top: 4px solid var(--cit-maroon);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(122, 26, 61, 0.08);
+  box-shadow: var(--shadow-sm);
 }
 
-.app-header h1 {
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.header-left .cit-logo {
+  height: 100px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.title-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.wildcat-one-logo {
   font-size: 24px;
-  color: #2c3e50;
+  font-weight: 700;
+  color: var(--cit-maroon);
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  color: var(--color-muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+.user-info {
+  text-align: right;
+}
+
+.user-name {
+  color: var(--color-primary);
   font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 15px;
+}
+
+.user-id {
+  color: var(--color-muted);
+  font-size: 12px;
+  margin-bottom: var(--spacing-md);
 }
 
 .logout-btn {
   padding: 9px 18px;
-  background: #e74c3c;
+  background: var(--status-error);
   color: white;
   border: none;
   cursor: pointer;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  border-radius: var(--radius-md);
   font-size: 13px;
   font-weight: 500;
   transition: all 0.2s;
@@ -69,24 +89,372 @@ body {
   transform: translateY(-1px);
 }
 
-.app-main {
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 8px;
+/* ===================================================================
+   QUICK ACTIONS SECTION
+   =================================================================== */
+.quick-actions-section {
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  border-radius: var(--radius-lg);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
-.app-main p {
-  margin-bottom: 12px;
-  color: #34495e;
+.quick-actions-section .section-title {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.button-group {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-success {
+  padding: 11px 22px;
+  background: linear-gradient(135deg, var(--cit-maroon) 0%, var(--cit-maroon-dark) 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  border-radius: var(--radius-md);
+  transition: all 0.2s;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 0 3px 10px rgba(122, 26, 61, 0.35);
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, var(--cit-maroon-light) 0%, var(--cit-maroon) 100%);
+  box-shadow: 0 5px 15px rgba(122, 26, 61, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-cancel {
+  padding: 12px 28px;
+  background: var(--bg-secondary);
+  color: var(--color-primary);
+  border: 1.5px solid var(--border-primary);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.btn-cancel:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--color-tertiary);
+  transform: translateY(-1px);
+}
+
+.btn-confirm-logout {
+  padding: 12px 28px;
+  background: var(--status-error);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.btn-confirm-logout:hover {
+  background: #c0392b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+/* ===================================================================
+   HAMBURGER MENU
+   =================================================================== */
+.floating-hamburger {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: none;
+}
+
+.hamburger-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.hamburger-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.hamburger-btn {
+  width: 50px;
+  height: 50px;
+  background: var(--cit-maroon);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(122, 26, 61, 0.3);
+  transition: all 0.3s ease;
+}
+
+.hamburger-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(122, 26, 61, 0.4);
+}
+
+.hamburger-line {
+  width: 26px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-btn.active .hamburger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-btn.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-btn.active .hamburger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.hamburger-menu {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  min-width: 220px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburger-menu.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.hamburger-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.hamburger-menu-item:hover {
+  background: var(--bg-secondary);
+  transform: translateX(4px);
+}
+
+.hamburger-divider {
+  height: 1px;
+  background: var(--border-secondary);
+  margin: 8px 12px;
+}
+
+.hamburger-logout:hover {
+  background: #ffebee;
+}
+
+.hamburger-logout .menu-label {
+  color: var(--status-error);
+  font-weight: 500;
+}
+
+.menu-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.menu-label {
+  color: var(--color-primary);
+  font-weight: 500;
   font-size: 14px;
 }
 
-/* Utility Classes */
-.hidden {
-  display: none !important;
+/* ===================================================================
+   LOGOUT MODAL
+   =================================================================== */
+.logout-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
-.no-margin {
-  margin: 0 !important;
+.logout-modal-content {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: modalSlideUp 0.3s ease;
+}
+
+@keyframes modalSlideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.logout-modal-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.logout-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 12px;
+}
+
+.logout-modal-text {
+  font-size: 15px;
+  color: var(--color-tertiary);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.logout-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ===================================================================
+   RESPONSIVE
+   =================================================================== */
+@media screen and (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .header-left {
+    width: 100%;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .header-left .cit-logo {
+    height: 45px;
+  }
+
+  .title-text {
+    gap: 2px;
+    text-align: center;
+  }
+
+  .title-text .wildcat-one-logo {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+  }
+
+  .user-info {
+    text-align: center;
+    width: 100%;
+  }
+
+  .logout-btn {
+    display: none;
+  }
+
+  .floating-hamburger {
+    display: block !important;
+  }
+
+  .quick-actions-section {
+    display: none !important;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-success,
+  .btn-cancel,
+  .btn-confirm-logout {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wildcat-one-logo {
+    font-size: 18px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
 }
