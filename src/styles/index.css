@@ -1,6 +1,6 @@
 /* ===================================================================
    WILDCAT ONE - GLOBAL STYLES (React)
-   Variables, Reset, and Base Configuration
+   Variables, Reset, Base Configuration, and Shared Components
    =================================================================== */
 
 /* ===================================================================
@@ -105,4 +105,421 @@ code {
 
 .no-margin {
   margin: 0 !important;
+}
+
+.center {
+  text-align: center;
+}
+
+/* ===================================================================
+   SECTION CONTAINER (Shared across all main content sections)
+   =================================================================== */
+.section {
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.section-title {
+  font-size: 19px;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-lg);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* ===================================================================
+   LOADING STATE (Shared)
+   =================================================================== */
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-muted);
+  font-size: 15px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-secondary);
+  border-top-color: var(--cit-maroon);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===================================================================
+   ERROR MESSAGES (Shared)
+   =================================================================== */
+.error-message,
+.form-error {
+  text-align: center;
+  padding: var(--spacing-md) 14px;
+  color: var(--status-error);
+  background: #fee;
+  border: 1px solid #fcc;
+  border-left: 4px solid var(--status-error);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  font-size: 14px;
+}
+
+.form-error.show {
+  display: block;
+}
+
+/* ===================================================================
+   SUCCESS MESSAGES (Shared)
+   =================================================================== */
+.success-message {
+  text-align: center;
+  padding: var(--spacing-md) 14px;
+  color: #155724;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-left: 4px solid var(--status-success);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  font-size: 14px;
+}
+
+/* ===================================================================
+   SEMESTER INFO BOX (Standardized)
+   =================================================================== */
+.semester-info {
+  background: var(--bg-accent);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  border-left: 4px solid var(--cit-maroon);
+}
+
+.semester-info-title {
+  color: var(--cit-maroon);
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.semester-info-text {
+  color: var(--color-tertiary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ===================================================================
+   SEMESTER SELECTOR (Standardized)
+   =================================================================== */
+.semester-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.semester-selector label {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 14px;
+}
+
+.semester-selector select {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-primary);
+  font-family: inherit;
+}
+
+.semester-selector select:hover {
+  border-color: var(--cit-maroon);
+}
+
+.semester-selector select:focus {
+  outline: none;
+  border-color: var(--cit-maroon);
+  box-shadow: 0 0 0 3px rgba(122, 26, 61, 0.1);
+}
+
+/* ===================================================================
+   SCROLL HINTS (Standardized)
+   =================================================================== */
+.scroll-hint {
+  display: none;
+  text-align: center;
+  padding: 0.5rem;
+  background: linear-gradient(90deg, transparent, var(--bg-accent), transparent);
+  color: var(--cit-maroon);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  border-radius: var(--radius-md);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ===================================================================
+   TABLE CONTAINER (Standardized)
+   =================================================================== */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f7fafc;
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+/* ===================================================================
+   FORM ELEMENTS (Standardized)
+   =================================================================== */
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-primary);
+  color: var(--color-primary);
+  font-family: inherit;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--cit-maroon);
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 3px rgba(122, 26, 61, 0.1);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled,
+.form-group select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-group input.form-input--error {
+  border-color: var(--status-error) !important;
+  background: #fff5f5 !important;
+}
+
+.form-group input.form-input--error:focus {
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+/* ===================================================================
+   BUTTONS (Standardized)
+   =================================================================== */
+.btn-success {
+  padding: 11px 22px;
+  background: linear-gradient(135deg, var(--cit-maroon) 0%, var(--cit-maroon-dark) 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: var(--radius-md);
+  transition: all 0.2s;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 0 3px 10px rgba(122, 26, 61, 0.35);
+}
+
+.btn-success:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--cit-maroon-light) 0%, var(--cit-maroon) 100%);
+  box-shadow: 0 5px 15px rgba(122, 26, 61, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-success:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-cancel {
+  padding: 11px 22px;
+  background: var(--bg-secondary);
+  color: var(--color-primary);
+  border: 1.5px solid var(--border-primary);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  border-color: var(--color-tertiary);
+  transform: translateY(-1px);
+}
+
+.btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===================================================================
+   COURSE CODE STYLING (Standardized)
+   =================================================================== */
+.course-code {
+  font-family: "Courier New", "Consolas", monospace;
+  color: var(--cit-maroon);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* ===================================================================
+   RESPONSIVE - MOBILE
+   =================================================================== */
+@media screen and (max-width: 768px) {
+  .section {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 17px;
+  }
+
+  .semester-info {
+    padding: 12px 14px;
+  }
+
+  .semester-info-title {
+    font-size: 12px;
+  }
+
+  .semester-info-text {
+    font-size: 12px;
+  }
+
+  .semester-selector {
+    width: 100%;
+  }
+
+  .semester-selector label {
+    font-size: 13px;
+  }
+
+  .semester-selector select {
+    flex: 1;
+    font-size: 13px;
+    padding: 0.625rem 0.875rem;
+  }
+
+  .btn-success,
+  .btn-cancel {
+    width: 100%;
+    padding: 12px 16px;
+  }
+
+  .scroll-hint {
+    display: block;
+  }
+
+  .table-container {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .loading {
+    padding: 30px 15px;
+    font-size: 14px;
+  }
+
+  .loading-spinner {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .section {
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+
+  .semester-info {
+    padding: 10px 12px;
+  }
+
+  .semester-info-title {
+    font-size: 11px;
+  }
+
+  .semester-info-text {
+    font-size: 11px;
+  }
+
+  .table-container {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .course-code {
+    font-size: 12px;
+  }
 }

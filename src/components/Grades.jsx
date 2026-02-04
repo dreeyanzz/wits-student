@@ -91,37 +91,37 @@ function Grades() {
   // Render loading state
   if (loading) {
     return (
-      <section className="section">
+      <div className="section">
         <h2 className="section-title">📊 Academic Grades</h2>
         <div dangerouslySetInnerHTML={{ __html: createLoadingHTML('Loading grades...') }} />
-      </section>
+      </div>
     );
   }
 
   // Render error state
   if (error) {
     return (
-      <section className="section">
+      <div className="section">
         <h2 className="section-title">📊 Academic Grades</h2>
         <div dangerouslySetInnerHTML={{ __html: createErrorHTML(error) }} />
-      </section>
+      </div>
     );
   }
 
   const enrollment = allEnrollments[currentSemesterIndex];
   if (!enrollment) {
     return (
-      <section className="section">
+      <div className="section">
         <h2 className="section-title">📊 Academic Grades</h2>
         <div className="loading">No grades available</div>
-      </section>
+      </div>
     );
   }
 
   const courses = enrollment.enrolledCourseGradeDetails || enrollment.studentGradeHistoryData || [];
 
   return (
-    <section className="section">
+    <div className="section">
       <div className="grades-header">
         <h2 className="section-title no-margin">📊 Academic Grades</h2>
         <div className="semester-selector">
@@ -158,7 +158,7 @@ function Grades() {
 
       {/* Scroll hint for mobile */}
       {isMobileDevice() && showScrollHint && (
-        <div className="grades-scroll-hint">
+        <div className="scroll-hint">
           ☜ Swipe to see all columns ☞
         </div>
       )}
@@ -219,7 +219,7 @@ function Grades() {
           </tbody>
         </table>
       </div>
-    </section>
+    </div>
   );
 }
 

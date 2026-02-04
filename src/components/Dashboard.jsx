@@ -238,7 +238,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="dashboard-section-wrapper" id="dashboardSection">
+    <div className="section" id="dashboardSection">
       <h2 className="section-title">📊 Dashboard</h2>
 
       {/* Stats Grid */}

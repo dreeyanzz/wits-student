@@ -89,37 +89,37 @@ function Professors() {
   // Render loading state
   if (loading) {
     return (
-      <section className="section">
+      <div className="section">
         <h2 className="section-title">👨‍🏫 My Professors</h2>
         <div dangerouslySetInnerHTML={{ __html: createLoadingHTML('Loading professors...') }} />
-      </section>
+      </div>
     );
   }
 
   // Render error state
   if (error) {
     return (
-      <section className="section">
+      <div className="section">
         <h2 className="section-title">👨‍🏫 My Professors</h2>
         <div dangerouslySetInnerHTML={{ __html: createErrorHTML(error) }} />
-      </section>
+      </div>
     );
   }
 
   const enrollment = allEnrollments[currentSemesterIndex];
   if (!enrollment) {
     return (
-      <section className="section">
+      <div className="section">
         <h2 className="section-title">👨‍🏫 My Professors</h2>
         <div className="loading">No data available</div>
-      </section>
+      </div>
     );
   }
 
   const courses = enrollment.enrolledCourseGradeDetails || enrollment.studentGradeHistoryData || [];
 
   return (
-    <section className="section">
+    <div className="section">
       <div className="professors-header">
         <h2 className="section-title no-margin">👨‍🏫 My Professors</h2>
         <div className="semester-selector">
@@ -154,7 +154,7 @@ function Professors() {
 
       {/* Scroll hint for mobile */}
       {isMobileDevice() && showScrollHint && (
-        <div className="professors-scroll-hint">
+        <div className="scroll-hint">
           ☜ Swipe to see all columns ☞
         </div>
       )}
@@ -189,7 +189,7 @@ function Professors() {
           </tbody>
         </table>
       </div>
-    </section>
+    </div>
   );
 }
 

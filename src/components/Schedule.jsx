@@ -395,25 +395,25 @@ function Schedule() {
   // Render loading state
   if (loading) {
     return (
-      <section className="section">
-        <h2 className="section-title">📅 My Class Schedule</h2>
+    <div className="section">
+    <h2 className="section-title">📅 My Class Schedule</h2>
         <div dangerouslySetInnerHTML={{ __html: createLoadingHTML('Loading schedule...') }} />
-      </section>
+      </div>
     );
   }
 
   // Render error state
   if (error) {
     return (
-      <section className="section">
+      <div className="section">
         <h2 className="section-title">📅 My Class Schedule</h2>
         <div dangerouslySetInnerHTML={{ __html: createErrorHTML(error) }} />
-      </section>
+      </div>
     );
   }
 
   return (
-    <section className="section">
+    <div className="section">
       <div className="schedule-header">
         <h2 className="section-title no-margin">📅 My Class Schedule</h2>
         <div className="semester-selector">
@@ -449,7 +449,7 @@ function Schedule() {
 
       {/* Scroll hint for mobile */}
       {isMobileDevice() && showScrollHint && (
-        <div className="schedule-scroll-hint">
+        <div className="scroll-hint">
           ☜ Swipe to see more days ☞
         </div>
       )}
@@ -512,7 +512,7 @@ function Schedule() {
           y={tooltipPosition.y}
         />
       )}
-    </section>
+    </div>
   );
 }
 

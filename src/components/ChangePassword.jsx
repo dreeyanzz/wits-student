@@ -241,13 +241,13 @@ function ChangePassword() {
 
       <div className="change-password-form">
         {error && (
-          <div className="form-error show">
+          <div className="form-error">
             ❌ {error}
           </div>
         )}
 
         {success && (
-          <div className="change-password-success show">
+          <div className="success-message">
             ✅ {success}
           </div>
         )}

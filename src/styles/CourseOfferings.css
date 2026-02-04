@@ -115,26 +115,7 @@
   font-style: italic;
 }
 
-/* ===================================================================
-   OFFERINGS SCROLL HINT
-   =================================================================== */
-.offerings-scroll-hint {
-  display: none;
-  text-align: center;
-  padding: 0.5rem;
-  background: linear-gradient(90deg, transparent, #f3e8ff, transparent);
-  color: #7c3aed;
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  border-radius: var(--radius-md);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
-}
+/* Scroll hint now uses global .scroll-hint class from index.css */
 
 /* ===================================================================
    OFFERINGS TABLE

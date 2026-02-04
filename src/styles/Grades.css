@@ -15,86 +15,12 @@
   margin-bottom: 1.5rem;
 }
 
-.semester-selector {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.semester-selector label {
-  font-weight: 600;
-  color: var(--color-primary);
-}
-
-.semester-selector select {
-  padding: 0.5rem 1rem;
-  border: 2px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  background: white;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.semester-selector select:hover {
-  border-color: var(--cit-maroon);
-}
-
-.semester-selector select:focus {
-  outline: none;
-  border-color: var(--cit-maroon);
-  box-shadow: 0 0 0 3px rgba(122, 26, 61, 0.1);
-}
-
-/* ===================================================================
-   SEMESTER INFO
-   =================================================================== */
-.semester-info {
-  background: var(--bg-accent);
-  padding: 14px 16px;
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-lg);
-  border-left: 4px solid var(--cit-maroon);
-}
-
-.semester-info-title {
-  color: var(--cit-maroon);
-  font-weight: 600;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-
-.semester-info-text {
-  color: var(--color-tertiary);
-  font-size: 13px;
-}
-
-.grades-scroll-hint {
-  display: none;
-  text-align: center;
-  padding: 0.5rem;
-  background: linear-gradient(90deg, transparent, #fff4e6, transparent);
-  color: #d97706;
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  border-radius: var(--radius-md);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
-}
+/* Semester selector, info, and scroll hint now use global styles from index.css */
 
 /* ===================================================================
    TABLE STYLES
    =================================================================== */
-.table-container {
-  overflow-x: auto;
-  margin-bottom: 2rem;
-  -webkit-overflow-scrolling: touch;
-}
+/* .table-container now uses global styles from index.css */
 
 .grades-table {
   width: 100%;
@@ -142,12 +68,7 @@
 /* ===================================================================
    TABLE CONTENT STYLES
    =================================================================== */
-.course-code {
-  font-family: "Courier New", "Consolas", monospace;
-  color: var(--cit-maroon);
-  font-weight: 600;
-  font-size: 13px;
-}
+/* .course-code now uses global styles from index.css */
 
 .course-info {
   display: flex;

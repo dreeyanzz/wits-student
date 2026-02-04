@@ -310,27 +310,27 @@ function CourseOfferings() {
   // Render loading state
   if (loading) {
     return (
-      <section className="section">
+      <div className="section">
         <h2 className="section-title">🔍 Course Offerings</h2>
         <div dangerouslySetInnerHTML={{ __html: createLoadingHTML('Loading courses...') }} />
-      </section>
+      </div>
     );
   }
 
   // Render error state
   if (error) {
     return (
-      <section className="section">
+      <div className="section">
         <h2 className="section-title">🔍 Course Offerings</h2>
         <div dangerouslySetInnerHTML={{ __html: createErrorHTML(error) }} />
-      </section>
+      </div>
     );
   }
 
   const sortedOfferings = getSortedOfferings();
 
   return (
-    <section className="section">
+    <div className="section">
       <h2 className="section-title">🔍 Course Offerings</h2>
 
       {/* Search Form */}
@@ -401,7 +401,7 @@ function CourseOfferings() {
 
           {/* Scroll hint for mobile */}
           {isMobileDevice() && showScrollHint && (
-            <div className="offerings-scroll-hint">
+            <div className="scroll-hint">
               ☜ Swipe to see all columns ☞
             </div>
           )}
@@ -512,7 +512,7 @@ function CourseOfferings() {
       {!searchingOfferings && !offeringsError && offerings.length === 0 && selectedCourse && (
         <div className="loading">No offerings available for this course</div>
       )}
-    </section>
+    </div>
   );
 }
 

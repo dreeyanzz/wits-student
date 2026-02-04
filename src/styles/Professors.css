@@ -15,23 +15,7 @@
   margin-bottom: 1.5rem;
 }
 
-.professors-scroll-hint {
-  display: none;
-  text-align: center;
-  padding: 0.5rem;
-  background: linear-gradient(90deg, transparent, #e6f3ff, transparent);
-  color: #0066cc;
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  border-radius: var(--radius-md);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
-}
+/* Scroll hint now uses global .scroll-hint class from index.css */
 
 /* ===================================================================
    TABLE STYLES
@@ -75,7 +59,7 @@
    TABLE CONTENT STYLES
    =================================================================== */
 .professor-name {
-  color: #d4a017;
+  color: var(--cit-maroon);
   font-weight: 600;
   font-size: 13px;
 }
