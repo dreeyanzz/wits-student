@@ -4,6 +4,8 @@ import SessionRestoreOverlay from './components/SessionRestoreOverlay';
 import Dashboard from './components/Dashboard';
 import Schedule from './components/Schedule';
 import Grades from './components/Grades';
+import Professors from './components/Professors';
+import CourseOfferings from './components/CourseOfferings';
 import { AuthService } from './services/auth';
 import { initializeTimeSlots } from './config/constants';
 import './styles/App.css';
@@ -233,18 +235,8 @@ function App() {
       {activeSection === 'dashboard' && <Dashboard />}
       {activeSection === 'schedule' && <Schedule />}
       {activeSection === 'grades' && <Grades />}
-      {activeSection === 'professors' && (
-        <div className="section">
-          <h2 className="section-title">👨‍🏫 Professors</h2>
-          <p>Professors section coming soon...</p>
-        </div>
-      )}
-      {activeSection === 'offerings' && (
-        <div className="section">
-          <h2 className="section-title">🔍 Course Offerings</h2>
-          <p>Course Offerings section coming soon...</p>
-        </div>
-      )}
+      {activeSection === 'professors' && <Professors />}
+      {activeSection === 'offerings' && <CourseOfferings />}
       {activeSection === 'changePassword' && (
         <div className="section">
           <h2 className="section-title">🔐 Change Password</h2>

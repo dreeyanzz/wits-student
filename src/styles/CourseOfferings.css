@@ -1,0 +1,593 @@
+/* ===================================================================
+   WILDCAT ONE - COURSE OFFERINGS
+   Course search and offerings table styles
+   =================================================================== */
+
+/* ===================================================================
+   COURSE SEARCH FORM
+   =================================================================== */
+.course-search-form {
+  background: var(--bg-secondary);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-xl);
+  border: 1px solid var(--border-secondary);
+}
+
+.search-dropdown-wrapper {
+  position: relative;
+}
+
+.course-search-input {
+  width: 100%;
+  padding: var(--spacing-md) 14px;
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-primary);
+  color: var(--color-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  cursor: text;
+  transition: all 0.2s;
+  margin-bottom: 0;
+}
+
+.course-search-input:focus {
+  outline: none;
+  border-color: var(--cit-maroon);
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 3px rgba(122, 26, 61, 0.1);
+}
+
+.course-search-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===================================================================
+   DROPDOWN
+   =================================================================== */
+.course-dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-primary);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: -1px;
+}
+
+.course-dropdown-list.show {
+  display: block;
+}
+
+.course-dropdown-item {
+  padding: var(--spacing-md) 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-bottom: 1px solid var(--border-secondary);
+  font-size: 13px;
+  color: var(--color-primary);
+}
+
+.course-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.course-dropdown-item:hover {
+  background: var(--bg-secondary);
+}
+
+.course-dropdown-item.selected {
+  background: var(--bg-accent);
+  border-left: 3px solid var(--cit-maroon);
+  padding-left: 11px;
+}
+
+.course-dropdown-item.active {
+  background: #f0f4f8;
+}
+
+.course-code-text {
+  font-weight: 600;
+  color: var(--cit-maroon);
+  font-family: "Courier New", "Consolas", monospace;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.course-name-text {
+  color: var(--color-tertiary);
+  font-size: 12px;
+}
+
+.course-dropdown-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* ===================================================================
+   OFFERINGS SCROLL HINT
+   =================================================================== */
+.offerings-scroll-hint {
+  display: none;
+  text-align: center;
+  padding: 0.5rem;
+  background: linear-gradient(90deg, transparent, #f3e8ff, transparent);
+  color: #7c3aed;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  border-radius: var(--radius-md);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ===================================================================
+   OFFERINGS TABLE
+   =================================================================== */
+.offerings-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-top: var(--spacing-lg);
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-size: 13px;
+  border: 1px solid var(--border-secondary);
+}
+
+.offerings-table thead {
+  background: var(--bg-secondary);
+}
+
+.offerings-table th {
+  padding: 14px var(--spacing-md);
+  text-align: left;
+  color: var(--color-primary);
+  font-weight: 600;
+  border-bottom: 2px solid var(--border-primary);
+}
+
+.offerings-table th.center {
+  text-align: center;
+}
+
+.offerings-table td {
+  padding: 14px var(--spacing-md);
+  border-bottom: 1px solid var(--border-secondary);
+  color: var(--color-primary);
+  vertical-align: top;
+}
+
+.offerings-table td.center {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.offerings-table tbody tr:hover {
+  background: var(--bg-secondary);
+  transition: background 0.15s ease;
+}
+
+/* ===================================================================
+   SORTABLE HEADERS
+   =================================================================== */
+.sortable {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.sortable:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.sortable:active {
+  background-color: var(--border-secondary) !important;
+}
+
+.sort-icon {
+  font-size: 10px;
+  margin-left: 4px;
+  color: var(--cit-maroon);
+  font-weight: bold;
+}
+
+.sort-icon-inactive {
+  color: var(--color-tertiary);
+  opacity: 0.5;
+}
+
+/* ===================================================================
+   SECTION LABEL
+   =================================================================== */
+.section-label {
+  font-family: "Courier New", "Consolas", monospace;
+  color: var(--cit-maroon);
+  font-weight: 600;
+  font-size: 12px;
+  display: block;
+  word-break: break-word;
+  line-height: 1.4;
+  max-width: 95px;
+}
+
+/* ===================================================================
+   SCHEDULE ITEMS
+   =================================================================== */
+.schedule-item {
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  background: var(--bg-accent);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  border-left: 3px solid var(--cit-maroon);
+  line-height: 1.3;
+}
+
+.schedule-item:last-child {
+  margin-bottom: 0;
+}
+
+.schedule-day {
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 2px;
+  font-size: 11px;
+}
+
+.schedule-time {
+  color: var(--color-tertiary);
+  font-size: 10px;
+  margin-bottom: 1px;
+}
+
+.schedule-room {
+  color: var(--color-muted);
+  font-size: 10px;
+}
+
+/* ===================================================================
+   SLOTS DISPLAY
+   =================================================================== */
+.slots-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.slots-bar {
+  width: 100%;
+  max-width: 120px;
+  height: 8px;
+  background: var(--border-secondary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.slots-fill {
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--cit-maroon) 0%,
+    var(--cit-maroon-dark) 100%
+  );
+  transition: width 0.3s ease;
+}
+
+.slots-text {
+  font-size: 12px;
+  color: var(--color-tertiary);
+  font-weight: 600;
+}
+
+/* ===================================================================
+   STATUS BADGES
+   =================================================================== */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.status-open {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-full {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.status-closed {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* ===================================================================
+   RESPONSIVE
+   =================================================================== */
+@media (max-width: 768px) {
+  .offerings-scroll-hint {
+    display: block;
+  }
+
+  .course-search-form {
+    padding: 16px;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .course-search-form .form-group {
+    margin-bottom: 14px;
+  }
+
+  .course-search-form .form-group label {
+    font-size: 13px;
+  }
+
+  .course-search-input {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .btn-success {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .semester-info {
+    padding: 1rem 1.25rem;
+  }
+
+  .semester-info-title {
+    font-size: 12px;
+  }
+
+  .semester-info-text {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .table-container {
+    margin: 0 -1rem;
+    padding: 0 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .offerings-table {
+    font-size: 11px;
+    min-width: 900px;
+    table-layout: auto;
+  }
+
+  .offerings-table th,
+  .offerings-table td {
+    padding: 10px 6px;
+  }
+
+  .offerings-table th:nth-child(1),
+  .offerings-table td:nth-child(1) {
+    width: 90px;
+    min-width: 90px;
+  }
+
+  .offerings-table th:nth-child(2),
+  .offerings-table td:nth-child(2) {
+    width: 140px;
+    min-width: 140px;
+  }
+
+  .offerings-table th:nth-child(3),
+  .offerings-table td:nth-child(3) {
+    width: 90px;
+    min-width: 90px;
+  }
+
+  .offerings-table th:nth-child(4),
+  .offerings-table td:nth-child(4) {
+    width: 180px;
+    min-width: 180px;
+  }
+
+  .offerings-table th:nth-child(5),
+  .offerings-table td:nth-child(5) {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  .offerings-table th:nth-child(6),
+  .offerings-table td:nth-child(6) {
+    width: 75px;
+    min-width: 75px;
+  }
+
+  .offerings-table th:nth-child(7),
+  .offerings-table td:nth-child(7) {
+    width: 130px;
+    min-width: 130px;
+  }
+
+  .section-label {
+    font-size: 11px;
+  }
+
+  .schedule-item {
+    font-size: 10px;
+    padding: 5px 6px;
+  }
+
+  .schedule-day {
+    font-size: 10px;
+  }
+
+  .schedule-time,
+  .schedule-room {
+    font-size: 9px;
+  }
+
+  .slots-text {
+    font-size: 11px;
+  }
+
+  .status-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.125rem;
+  }
+
+  .course-search-form {
+    padding: 14px;
+  }
+
+  .course-search-input {
+    font-size: 12px;
+  }
+
+  .course-dropdown-item {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .course-code-text {
+    font-size: 12px;
+  }
+
+  .course-name-text {
+    font-size: 11px;
+  }
+
+  .semester-info {
+    padding: 0.75rem 1rem;
+  }
+
+  .semester-info-title {
+    font-size: 10px;
+  }
+
+  .semester-info-text {
+    font-size: 10px;
+    line-height: 1.6;
+  }
+
+  .table-container {
+    margin: 0 -0.75rem;
+    padding: 0 0.75rem;
+  }
+
+  .offerings-table {
+    font-size: 10px;
+    min-width: 850px;
+  }
+
+  .offerings-table th,
+  .offerings-table td {
+    padding: 8px 5px;
+  }
+
+  .offerings-table th:nth-child(1),
+  .offerings-table td:nth-child(1) {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  .offerings-table th:nth-child(2),
+  .offerings-table td:nth-child(2) {
+    width: 130px;
+    min-width: 130px;
+  }
+
+  .offerings-table th:nth-child(3),
+  .offerings-table td:nth-child(3) {
+    width: 85px;
+    min-width: 85px;
+  }
+
+  .offerings-table th:nth-child(4),
+  .offerings-table td:nth-child(4) {
+    width: 160px;
+    min-width: 160px;
+  }
+
+  .offerings-table th:nth-child(5),
+  .offerings-table td:nth-child(5) {
+    width: 70px;
+    min-width: 70px;
+  }
+
+  .offerings-table th:nth-child(6),
+  .offerings-table td:nth-child(6) {
+    width: 70px;
+    min-width: 70px;
+  }
+
+  .offerings-table th:nth-child(7),
+  .offerings-table td:nth-child(7) {
+    width: 120px;
+    min-width: 120px;
+  }
+
+  .section-label {
+    font-size: 10px;
+  }
+
+  .schedule-item {
+    font-size: 9px;
+    padding: 4px 5px;
+  }
+
+  .schedule-day {
+    font-size: 9px;
+  }
+
+  .schedule-time,
+  .schedule-room {
+    font-size: 8px;
+  }
+
+  .slots-bar {
+    max-width: 100px;
+    height: 6px;
+  }
+
+  .slots-text {
+    font-size: 10px;
+  }
+
+  .status-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+}
