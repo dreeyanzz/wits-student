@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { ApiService } from '../services/api';
 import { getItem } from '../services/storage';
-import { createLoadingHTML, createErrorHTML, isMobileDevice } from '../utils/dom';
+import LoadingState from './shared/LoadingState';
+import ErrorState from './shared/ErrorState';
+import SectionHeader from './shared/SectionHeader';
+import SemesterSelector from './shared/SemesterSelector';
+import ScrollHint from './shared/ScrollHint';
+import { useScrollHint } from '../hooks/useScrollHint';
 import '../styles/Grades.css';
 
 /**
@@ -12,8 +17,8 @@ function Grades() {
   const [error, setError] = useState(null);
   const [allEnrollments, setAllEnrollments] = useState([]);
   const [currentSemesterIndex, setCurrentSemesterIndex] = useState(0);
-  const [showScrollHint, setShowScrollHint] = useState(true);
   
+  const { showHint, handleScroll } = useScrollHint();
   const loadCounterRef = useRef(0);
 
   /**
@@ -69,14 +74,6 @@ function Grades() {
   };
 
   /**
-   * Handles semester selection change
-   */
-  const handleSemesterChange = (e) => {
-    const index = parseInt(e.target.value, 10);
-    setCurrentSemesterIndex(index);
-  };
-
-  /**
    * Gets grade color class based on numeric value
    */
   const getGradeClass = (grade) => {
@@ -92,8 +89,8 @@ function Grades() {
   if (loading) {
     return (
       <div className="section">
-        <h2 className="section-title">📊 Academic Grades</h2>
-        <div dangerouslySetInnerHTML={{ __html: createLoadingHTML('Loading grades...') }} />
+        <SectionHeader icon="📊" title="Academic Grades" />
+        <LoadingState message="Loading grades..." />
       </div>
     );
   }
@@ -102,8 +99,8 @@ function Grades() {
   if (error) {
     return (
       <div className="section">
-        <h2 className="section-title">📊 Academic Grades</h2>
-        <div dangerouslySetInnerHTML={{ __html: createErrorHTML(error) }} />
+        <SectionHeader icon="📊" title="Academic Grades" />
+        <ErrorState message={error} onRetry={loadGrades} />
       </div>
     );
   }
@@ -112,7 +109,7 @@ function Grades() {
   if (!enrollment) {
     return (
       <div className="section">
-        <h2 className="section-title">📊 Academic Grades</h2>
+        <SectionHeader icon="📊" title="Academic Grades" />
         <div className="loading">No grades available</div>
       </div>
     );
@@ -122,28 +119,17 @@ function Grades() {
 
   return (
     <div className="section">
-      <div className="grades-header">
-        <h2 className="section-title no-margin">📊 Academic Grades</h2>
-        <div className="semester-selector">
-          <label htmlFor="semesterSelect">Semester:</label>
-          <select 
-            id="semesterSelect"
-            value={currentSemesterIndex}
-            onChange={handleSemesterChange}
-          >
-            {allEnrollments.map((enroll, index) => {
-              const schoolYear = enroll.academicYear || 'N/A';
-              const semester = enroll.term || 'N/A';
-              const yearLevel = enroll.yearLevel || '';
-              return (
-                <option key={index} value={index}>
-                  {schoolYear}: {semester}{yearLevel ? ` (${yearLevel})` : ''}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-      </div>
+      <SectionHeader
+        icon="📊"
+        title="Academic Grades"
+        actions={
+          <SemesterSelector
+            enrollments={allEnrollments}
+            selectedIndex={currentSemesterIndex}
+            onChange={setCurrentSemesterIndex}
+          />
+        }
+      />
 
       <div className="semester-info">
         <div className="semester-info-title">Semester Information</div>
@@ -157,16 +143,9 @@ function Grades() {
       </div>
 
       {/* Scroll hint for mobile */}
-      {isMobileDevice() && showScrollHint && (
-        <div className="scroll-hint">
-          ☜ Swipe to see all columns ☞
-        </div>
-      )}
+      <ScrollHint show={showHint} message="☜ Swipe to see all columns ☞" />
 
-      <div 
-        className="table-container"
-        onScroll={() => setShowScrollHint(false)}
-      >
+      <div className="table-container" onScroll={handleScroll}>
         <table className="grades-table">
           <thead>
             <tr>

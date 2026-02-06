@@ -20,7 +20,6 @@ export const CONFIG = {
   // API URLs (correct staging URLs)
   BASE_URL: "https://rg-cit-u-staging-004-wa-014.azurewebsites.net",
   LOGIN_URL: "https://rg-cit-u-staging-004-wa-017.azurewebsites.net",
-  API_URL: "https://rg-cit-u-staging-004-wa-014.azurewebsites.net",
   
   // CORS Proxy (required for browser requests)
   PROXY_URL: "https://wildcat-one-api-proxy.adriangwapoz125.workers.dev/?url=",

@@ -222,4 +222,17 @@ export class AuthService {
   static getCurrentUser() {
     return getUserData();
   }
+
+  /**
+   * Handles API errors (for use by components)
+   * @param {Error} error - The error object
+   */
+  static handleApiError(error) {
+    // If it's a 401 (Unauthorized), token has expired
+    if (error.status === 401 || error.statusCode === 401) {
+      console.log('Token expired, logging out...');
+      this.logout();
+      window.location.reload();
+    }
+  }
 }

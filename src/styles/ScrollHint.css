@@ -1,0 +1,31 @@
+/* Scroll Hint Styles */
+
+.scroll-hint {
+  text-align: center;
+  padding: var(--spacing-sm);
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  margin: var(--spacing-sm) 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}
+
+/* Hide on desktop */
+@media (min-width: 769px) {
+  .scroll-hint {
+    display: none;
+  }
+}
