@@ -12,6 +12,7 @@ import {
   generateHmac,
   generateSalt,
 } from '../utils/crypto';
+import { AuthService } from './auth';
 
 export class ApiService {
   /**
@@ -139,12 +140,8 @@ export class ApiService {
    */
   static handleTokenExpiration() {
     console.warn('[API] Token expired - logging out and reloading page');
-    
-    // Dynamically import AuthService to avoid circular dependency
-    import('./auth').then(({ AuthService }) => {
-      AuthService.logout();
-      window.location.reload();
-    });
+    AuthService.logout();
+    window.location.reload();
   }
 
   /**
