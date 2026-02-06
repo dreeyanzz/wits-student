@@ -30,11 +30,9 @@ export default defineConfig({
           if (id.includes('/components/')) {
             return 'components';
           }
-          if (id.includes('/services/')) {
+          // Combine services and utils into one chunk to avoid circular dependency warning
+          if (id.includes('/services/') || id.includes('/utils/')) {
             return 'services';
-          }
-          if (id.includes('/utils/')) {
-            return 'utils';
           }
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
