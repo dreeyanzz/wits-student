@@ -3,8 +3,8 @@ import { ApiService } from '../services/api';
 import { getItem } from '../services/storage';
 import { TIME_SLOTS, DAYS } from '../config/constants';
 import { getCourseColor, isMobileDevice } from '../utils/dom';
-import LoadingState from './shared/LoadingState';
-import ErrorState from './shared/ErrorState';
+import { LoadingState, ErrorState, SectionHeader, SemesterSelector, ScrollHint } from './shared';
+import { useScrollHint } from '../hooks/useScrollHint';
 import { getDayIndex, getMinutesFrom7AM } from '../utils/time';
 import ScheduleModal from './ScheduleModal';
 import ScheduleTooltip from './ScheduleTooltip';
@@ -28,8 +28,8 @@ function Schedule() {
   const [modalData, setModalData] = useState(null);
   const [tooltipData, setTooltipData] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const [showScrollHint, setShowScrollHint] = useState(true);
-  
+
+  const { showHint, handleScroll: handleScrollHint } = useScrollHint();
   const loadCounterRef = useRef(0);
 
   /**
@@ -194,14 +194,6 @@ function Schedule() {
         setLoading(false);
       }
     }
-  };
-
-  /**
-   * Handles semester selection change
-   */
-  const handleSemesterChange = (e) => {
-    const index = parseInt(e.target.value, 10);
-    setSelectedScheduleIndex(index);
   };
 
   /**
@@ -414,7 +406,7 @@ function Schedule() {
   if (loading) {
     return (
       <div className="section">
-        <h2 className="section-title">📅 My Class Schedule</h2>
+        <SectionHeader icon="📅" title="My Class Schedule" />
         <LoadingState message="Loading schedule..." />
       </div>
     );
@@ -424,7 +416,7 @@ function Schedule() {
   if (error) {
     return (
       <div className="section">
-        <h2 className="section-title">📅 My Class Schedule</h2>
+        <SectionHeader icon="📅" title="My Class Schedule" />
         <ErrorState message={error} onRetry={loadSchedules} />
       </div>
     );
@@ -432,23 +424,17 @@ function Schedule() {
 
   return (
     <div className="section">
-      <div className="schedule-header">
-        <h2 className="section-title no-margin">📅 My Class Schedule</h2>
-        <div className="semester-selector">
-          <label htmlFor="scheduleSemesterSelect">Semester:</label>
-          <select 
-            id="scheduleSemesterSelect" 
-            value={selectedScheduleIndex}
-            onChange={handleSemesterChange}
-          >
-            {allEnrollments.map((schedule, index) => (
-              <option key={index} value={index}>
-                {schedule.displayText}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+      <SectionHeader
+        icon="📅"
+        title="My Class Schedule"
+        actions={
+          <SemesterSelector
+            enrollments={allEnrollments}
+            selectedIndex={selectedScheduleIndex}
+            onChange={setSelectedScheduleIndex}
+          />
+        }
+      />
 
       <div className="semester-info">
         <div className="semester-info-title">Viewing Schedule</div>
@@ -466,15 +452,11 @@ function Schedule() {
       </div>
 
       {/* Scroll hint for mobile */}
-      {isMobileDevice() && showScrollHint && (
-        <div className="scroll-hint">
-          ☜ Swipe to see more days ☞
-        </div>
-      )}
+      <ScrollHint show={showHint} message="☜ Swipe to see more days ☞" />
 
-      <div 
+      <div
         className="schedule-grid-container"
-        onScroll={() => setShowScrollHint(false)}
+        onScroll={handleScrollHint}
       >
         <div className="schedule-grid" id="scheduleGrid">
           {/* Headers */}

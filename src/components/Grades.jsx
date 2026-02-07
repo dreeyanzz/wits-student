@@ -1,11 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ApiService } from '../services/api';
 import { getItem } from '../services/storage';
-import LoadingState from './shared/LoadingState';
-import ErrorState from './shared/ErrorState';
-import SectionHeader from './shared/SectionHeader';
-import SemesterSelector from './shared/SemesterSelector';
-import ScrollHint from './shared/ScrollHint';
+import { LoadingState, ErrorState, SectionHeader, SemesterSelector, ScrollHint, EmptyState } from './shared';
 import { useScrollHint } from '../hooks/useScrollHint';
 import '../styles/Grades.css';
 
@@ -110,7 +106,7 @@ function Grades() {
     return (
       <div className="section">
         <SectionHeader icon="📊" title="Academic Grades" />
-        <div className="loading">No grades available</div>
+        <EmptyState message="No grades available" />
       </div>
     );
   }

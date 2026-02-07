@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { ApiService } from '../services/api';
 import { Validator } from '../utils/validation';
 import { CONFIG } from '../config/constants';
+import { SectionHeader } from './shared';
 import '../styles/ChangePassword.css';
 
 function ChangePassword() {
@@ -238,7 +239,7 @@ function ChangePassword() {
 
   return (
     <div className="section">
-      <h2 className="section-title">🔐 Change Password</h2>
+      <SectionHeader icon="🔐" title="Change Password" />
 
       <div className="change-password-form">
         {error && (

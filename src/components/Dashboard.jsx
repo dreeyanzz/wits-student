@@ -8,6 +8,7 @@ import { ApiService } from '../services/api';
 import { getUserData, stateManager } from '../services/storage';
 import { getTodayCode, getMinutesFrom7AM } from '../utils/time';
 import { getCourseColor } from '../utils/dom';
+import { SectionHeader, LoadingState, ErrorState } from './shared';
 import '../styles/Dashboard.css';
 
 export default function Dashboard() {
@@ -243,11 +244,11 @@ export default function Dashboard() {
 
   return (
     <div className="section" id="dashboardSection">
-      <h2 className="section-title">📊 Dashboard</h2>
+      <SectionHeader icon="📊" title="Dashboard" />
 
       {/* Stats Grid */}
       {statsError ? (
-        <div className="error-message">{statsError}</div>
+        <ErrorState message={statsError} />
       ) : (
         <div className="stats-grid">
           <div className="stat-card">
@@ -289,12 +290,9 @@ export default function Dashboard() {
         <h3 className="dashboard-section-title">Today's Classes</h3>
         <div id="todaySchedulePreview">
           {isLoadingSchedule ? (
-            <div className="loading">
-              <div className="loading-spinner"></div>
-              <div>Loading today's schedule...</div>
-            </div>
+            <LoadingState message="Loading today's schedule..." />
           ) : scheduleError ? (
-            <div className="error-message">{scheduleError}</div>
+            <ErrorState message={scheduleError} />
           ) : todayClasses.length === 0 ? (
             <div className="no-classes">🎉 No classes today!</div>
           ) : (

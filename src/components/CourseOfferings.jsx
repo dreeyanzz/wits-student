@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { ApiService } from '../services/api';
 import { getItem } from '../services/storage';
-import { isMobileDevice } from '../utils/dom';
-import LoadingState from './shared/LoadingState';
-import ErrorState from './shared/ErrorState';
+import { LoadingState, ErrorState, SectionHeader, ScrollHint, EmptyState } from './shared';
+import { useScrollHint } from '../hooks/useScrollHint';
 import { CONFIG } from '../config/constants';
 import '../styles/CourseOfferings.css';
 
@@ -23,8 +22,7 @@ function CourseOfferings() {
   const [offeringsError, setOfferingsError] = useState(null);
   const [sortBy, setSortBy] = useState('section');
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [showScrollHint, setShowScrollHint] = useState(true);
-  
+  const { showHint, handleScroll: handleScrollHint } = useScrollHint();
   const loadCounterRef = useRef(0);
   const searchCounterRef = useRef(0);
   const searchRef = useRef(null);
@@ -317,7 +315,7 @@ function CourseOfferings() {
   if (loading) {
     return (
       <div className="section">
-        <h2 className="section-title">🔍 Course Offerings</h2>
+        <SectionHeader icon="🔍" title="Course Offerings" />
         <LoadingState message="Loading courses..." />
       </div>
     );
@@ -327,7 +325,7 @@ function CourseOfferings() {
   if (error) {
     return (
       <div className="section">
-        <h2 className="section-title">🔍 Course Offerings</h2>
+        <SectionHeader icon="🔍" title="Course Offerings" />
         <ErrorState message={error} onRetry={loadCourses} />
       </div>
     );
@@ -337,7 +335,7 @@ function CourseOfferings() {
 
   return (
     <div className="section">
-      <h2 className="section-title">🔍 Course Offerings</h2>
+      <SectionHeader icon="🔍" title="Course Offerings" />
 
       {/* Search Form */}
       <div className="course-search-form">
@@ -399,15 +397,11 @@ function CourseOfferings() {
           </div>
 
           {/* Scroll hint for mobile */}
-          {isMobileDevice() && showScrollHint && (
-            <div className="scroll-hint">
-              ☜ Swipe to see all columns ☞
-            </div>
-          )}
+          <ScrollHint show={showHint} message="☜ Swipe to see all columns ☞" />
 
-          <div 
+          <div
             className="table-container"
-            onScroll={() => setShowScrollHint(false)}
+            onScroll={handleScrollHint}
           >
             <table className="offerings-table">
               <thead>
@@ -509,7 +503,7 @@ function CourseOfferings() {
       )}
 
       {!searchingOfferings && !offeringsError && offerings.length === 0 && selectedCourse && (
-        <div className="loading">No offerings available for this course</div>
+        <EmptyState message="No offerings available for this course" />
       )}
     </div>
   );

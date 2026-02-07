@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { ApiService } from '../services/api';
 import { getItem } from '../services/storage';
-import { isMobileDevice } from '../utils/dom';
-import LoadingState from './shared/LoadingState';
-import ErrorState from './shared/ErrorState';
+import { LoadingState, ErrorState, SectionHeader, SemesterSelector, ScrollHint, EmptyState } from './shared';
+import { useScrollHint } from '../hooks/useScrollHint';
 import '../styles/Professors.css';
 
 /**
@@ -14,8 +13,7 @@ function Professors() {
   const [error, setError] = useState(null);
   const [allEnrollments, setAllEnrollments] = useState([]);
   const [currentSemesterIndex, setCurrentSemesterIndex] = useState(0);
-  const [showScrollHint, setShowScrollHint] = useState(true);
-  
+  const { showHint, handleScroll: handleScrollHint } = useScrollHint();
   const loadCounterRef = useRef(0);
 
   /**
@@ -80,19 +78,11 @@ function Professors() {
     }
   };
 
-  /**
-   * Handles semester selection change
-   */
-  const handleSemesterChange = (e) => {
-    const index = parseInt(e.target.value, 10);
-    setCurrentSemesterIndex(index);
-  };
-
   // Render loading state
   if (loading) {
     return (
       <div className="section">
-        <h2 className="section-title">👨‍🏫 My Professors</h2>
+        <SectionHeader icon="👨‍🏫" title="My Professors" />
         <LoadingState message="Loading professors..." />
       </div>
     );
@@ -102,7 +92,7 @@ function Professors() {
   if (error) {
     return (
       <div className="section">
-        <h2 className="section-title">👨‍🏫 My Professors</h2>
+        <SectionHeader icon="👨‍🏫" title="My Professors" />
         <ErrorState message={error} onRetry={loadProfessors} />
       </div>
     );
@@ -112,8 +102,8 @@ function Professors() {
   if (!enrollment) {
     return (
       <div className="section">
-        <h2 className="section-title">👨‍🏫 My Professors</h2>
-        <div className="loading">No data available</div>
+        <SectionHeader icon="👨‍🏫" title="My Professors" />
+        <EmptyState message="No data available" />
       </div>
     );
   }
@@ -122,28 +112,17 @@ function Professors() {
 
   return (
     <div className="section">
-      <div className="professors-header">
-        <h2 className="section-title no-margin">👨‍🏫 My Professors</h2>
-        <div className="semester-selector">
-          <label htmlFor="professorSemesterSelect">Semester:</label>
-          <select 
-            id="professorSemesterSelect"
-            value={currentSemesterIndex}
-            onChange={handleSemesterChange}
-          >
-            {allEnrollments.map((enroll, index) => {
-              const schoolYear = enroll.academicYear || 'N/A';
-              const semester = enroll.term || 'N/A';
-              const yearLevel = enroll.yearLevel || '';
-              return (
-                <option key={index} value={index}>
-                  {schoolYear}: {semester}{yearLevel ? ` (${yearLevel})` : ''}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-      </div>
+      <SectionHeader
+        icon="👨‍🏫"
+        title="My Professors"
+        actions={
+          <SemesterSelector
+            enrollments={allEnrollments}
+            selectedIndex={currentSemesterIndex}
+            onChange={setCurrentSemesterIndex}
+          />
+        }
+      />
 
       <div className="semester-info">
         <div className="semester-info-title">Semester Information</div>
@@ -155,15 +134,11 @@ function Professors() {
       </div>
 
       {/* Scroll hint for mobile */}
-      {isMobileDevice() && showScrollHint && (
-        <div className="scroll-hint">
-          ☜ Swipe to see all columns ☞
-        </div>
-      )}
+      <ScrollHint show={showHint} message="☜ Swipe to see all columns ☞" />
 
-      <div 
+      <div
         className="table-container"
-        onScroll={() => setShowScrollHint(false)}
+        onScroll={handleScrollHint}
       >
         <table className="professors-table">
           <thead>
