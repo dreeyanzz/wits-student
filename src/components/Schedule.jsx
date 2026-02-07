@@ -208,37 +208,16 @@ function Schedule() {
         throw new Error('Schedule grid not found');
       }
 
-      // Store original styles
-      const originalOverflow = scheduleContainer.style.overflow;
-      const originalMinWidth = scheduleContainer.style.minWidth;
-      const originalWidth = scheduleContainer.style.width;
-      
-      // Force consistent rendering for screenshot
-      scheduleContainer.style.overflow = 'visible';
-      scheduleContainer.style.minWidth = '1200px';
-      scheduleContainer.style.width = 'fit-content';
-
-      // Small delay to ensure styles are applied
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Calculate exact dimensions for consistent rendering
-      const scheduleGrid = scheduleContainer.querySelector('.schedule-grid');
-      const computedWidth = scheduleGrid ? scheduleGrid.scrollWidth : scheduleContainer.scrollWidth;
-      const computedHeight = scheduleContainer.scrollHeight;
-
-      // Use html2canvas with fixed dimensions
+      // Use html2canvas — style overrides happen only in the off-screen clone
       const canvas = await html2canvas(scheduleContainer, {
         backgroundColor: '#ffffff',
-        scale: 2, // Higher quality
+        scale: 2,
         logging: false,
         useCORS: true,
         allowTaint: true,
         scrollY: -window.scrollY,
         scrollX: -window.scrollX,
-        width: Math.max(computedWidth, 1200),
-        height: computedHeight,
-        windowWidth: Math.max(computedWidth, 1200),
-        windowHeight: computedHeight,
+        windowWidth: 1200,
         onclone: (clonedDoc) => {
           const clonedContainer = clonedDoc.querySelector('.schedule-grid-container');
           if (clonedContainer) {
@@ -248,11 +227,6 @@ function Schedule() {
           }
         }
       });
-
-      // Restore original styles
-      scheduleContainer.style.overflow = originalOverflow;
-      scheduleContainer.style.minWidth = originalMinWidth;
-      scheduleContainer.style.width = originalWidth;
 
       // Convert canvas to blob and download
       canvas.toBlob((blob) => {
@@ -285,15 +259,6 @@ function Schedule() {
 
     } catch (error) {
       console.error('Error downloading schedule:', error);
-      
-      // Make sure to restore styles even on error
-      const scheduleContainer = document.querySelector('.schedule-grid-container');
-      if (scheduleContainer) {
-        scheduleContainer.style.overflow = '';
-        scheduleContainer.style.minWidth = '';
-        scheduleContainer.style.width = '';
-      }
-      
       setIsDownloading(false);
       alert('Failed to download schedule. Please try again.');
     }
