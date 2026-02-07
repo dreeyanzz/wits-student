@@ -52,44 +52,58 @@ export default function Dashboard() {
   }, []);
 
   /**
-   * Loads all dashboard data in parallel
+   * Loads all dashboard data, fetching schedule once and sharing the result
    * @param {number} myLoadId - Load identifier for race condition prevention
    */
   const loadDashboardData = async (myLoadId) => {
+    const userData = getUserData();
+    const currentAcademicYearId = stateManager.get('currentAcademicYearId');
+    const currentTermId = stateManager.get('currentTermId');
+
+    if (!currentAcademicYearId || !currentTermId) {
+      setStatsError('Academic context not initialized');
+      setScheduleError('Academic context not initialized');
+      setIsLoadingStats(false);
+      setIsLoadingSchedule(false);
+      return;
+    }
+
+    // Fetch schedule once for both stats and today's classes
+    let scheduleCourses = null;
+    try {
+      const endpoint = `/api/student/${userData.studentId}/${currentAcademicYearId}/${currentTermId}/schedule`;
+      const result = await ApiService.get(endpoint);
+
+      if (myLoadId !== loadCounterRef.current) return;
+
+      if (result.status === 200 && result.data?.items) {
+        scheduleCourses = result.data.items;
+      }
+    } catch (error) {
+      console.error('Error fetching schedule:', error);
+    }
+
+    if (myLoadId !== loadCounterRef.current) return;
+
+    // Process stats and today's schedule from the shared result
     await Promise.all([
-      loadStats(myLoadId),
-      loadTodaySchedule(myLoadId)
+      loadStats(myLoadId, scheduleCourses),
+      loadTodaySchedule(myLoadId, scheduleCourses)
     ]);
   };
 
   /**
    * Loads dashboard statistics (courses, professors, GWA)
    * @param {number} myLoadId - Load identifier
+   * @param {Array|null} scheduleCourses - Pre-fetched schedule data
    */
-  const loadStats = async (myLoadId) => {
+  const loadStats = async (myLoadId, scheduleCourses) => {
     try {
-      const userData = getUserData();
-      const currentAcademicYearId = stateManager.get('currentAcademicYearId');
-      const currentTermId = stateManager.get('currentTermId');
-
-      if (!currentAcademicYearId || !currentTermId) {
-        throw new Error('Academic context not initialized');
-      }
-
-      // Fetch schedule to get course count and professors
-      const endpoint = `/api/student/${userData.studentId}/${currentAcademicYearId}/${currentTermId}/schedule`;
-      const result = await ApiService.get(endpoint);
-
-      // Check if this request is still relevant
-      if (myLoadId !== loadCounterRef.current) return;
-
-      if (result.status === 200 && result.data?.items) {
-        const courses = result.data.items;
-        const uniqueProfessors = new Set(courses.map(c => c.instructor));
-
+      if (scheduleCourses) {
+        const uniqueProfessors = new Set(scheduleCourses.map(c => c.instructor));
         setStats(prev => ({
           ...prev,
-          currentCourses: courses.length,
+          currentCourses: scheduleCourses.length,
           totalProfessors: uniqueProfessors.size,
         }));
       } else {
@@ -183,48 +197,38 @@ export default function Dashboard() {
   /**
    * Loads today's class schedule
    * @param {number} myLoadId - Load identifier
+   * @param {Array|null} scheduleCourses - Pre-fetched schedule data
    */
-  const loadTodaySchedule = async (myLoadId) => {
+  const loadTodaySchedule = async (myLoadId, scheduleCourses) => {
     try {
-      const userData = getUserData();
-      const currentAcademicYearId = stateManager.get('currentAcademicYearId');
-      const currentTermId = stateManager.get('currentTermId');
-
-      if (!currentAcademicYearId || !currentTermId) {
-        throw new Error('Cannot load schedule - academic data not available');
+      if (!scheduleCourses) {
+        setScheduleError('Unable to load today\'s schedule');
+        return;
       }
-
-      const endpoint = `/api/student/${userData.studentId}/${currentAcademicYearId}/${currentTermId}/schedule`;
-      const result = await ApiService.get(endpoint);
 
       if (myLoadId !== loadCounterRef.current) return;
 
-      if (result.status === 200 && result.data?.items) {
-        const allCourses = result.data.items;
-        const todayCode = getTodayCode();
+      const todayCode = getTodayCode();
 
-        // Filter courses that have classes today
-        const todayCourses = [];
-        allCourses.forEach(course => {
-          course.schedule.forEach(sched => {
-            const hasToday = sched.day.some(d => d.code === todayCode);
-            if (hasToday) {
-              todayCourses.push({ course, schedule: sched });
-            }
-          });
+      // Filter courses that have classes today
+      const todayCourses = [];
+      scheduleCourses.forEach(course => {
+        course.schedule.forEach(sched => {
+          const hasToday = sched.day.some(d => d.code === todayCode);
+          if (hasToday) {
+            todayCourses.push({ course, schedule: sched });
+          }
         });
+      });
 
-        // Sort by time (earliest first)
-        todayCourses.sort((a, b) => {
-          const timeA = getMinutesFrom7AM(a.schedule.timeFrom);
-          const timeB = getMinutesFrom7AM(b.schedule.timeFrom);
-          return timeA - timeB;
-        });
+      // Sort by time (earliest first)
+      todayCourses.sort((a, b) => {
+        const timeA = getMinutesFrom7AM(a.schedule.timeFrom);
+        const timeB = getMinutesFrom7AM(b.schedule.timeFrom);
+        return timeA - timeB;
+      });
 
-        setTodayClasses(todayCourses);
-      } else {
-        setScheduleError('Unable to load today\'s schedule');
-      }
+      setTodayClasses(todayCourses);
     } catch (error) {
       console.error('Error loading today\'s schedule:', error);
       if (myLoadId === loadCounterRef.current) {

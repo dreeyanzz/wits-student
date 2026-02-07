@@ -102,6 +102,7 @@ function ChangePassword() {
 
       if (result.status === 200) {
         setSuccess(result.data.message || 'OTP sent to your email successfully!');
+        setTimeRemaining(300000); // Initialize before setting expiry to avoid "expired" flash
         setStep(2);
         setOtpExpiresAt(Date.now() + 300000); // 5 minutes
       } else {

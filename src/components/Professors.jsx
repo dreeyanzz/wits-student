@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { ApiService } from '../services/api';
 import { getItem } from '../services/storage';
-import { createLoadingHTML, createErrorHTML, isMobileDevice } from '../utils/dom';
+import { isMobileDevice } from '../utils/dom';
+import LoadingState from './shared/LoadingState';
+import ErrorState from './shared/ErrorState';
 import '../styles/Professors.css';
 
 /**
@@ -91,7 +93,7 @@ function Professors() {
     return (
       <div className="section">
         <h2 className="section-title">👨‍🏫 My Professors</h2>
-        <div dangerouslySetInnerHTML={{ __html: createLoadingHTML('Loading professors...') }} />
+        <LoadingState message="Loading professors..." />
       </div>
     );
   }
@@ -101,7 +103,7 @@ function Professors() {
     return (
       <div className="section">
         <h2 className="section-title">👨‍🏫 My Professors</h2>
-        <div dangerouslySetInnerHTML={{ __html: createErrorHTML(error) }} />
+        <ErrorState message={error} onRetry={loadProfessors} />
       </div>
     );
   }

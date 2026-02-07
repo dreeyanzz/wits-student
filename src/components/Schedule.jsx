@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { ApiService } from '../services/api';
 import { getItem } from '../services/storage';
 import { TIME_SLOTS, DAYS } from '../config/constants';
-import { getCourseColor, createLoadingHTML, createErrorHTML, isMobileDevice } from '../utils/dom';
+import { getCourseColor, isMobileDevice } from '../utils/dom';
+import LoadingState from './shared/LoadingState';
+import ErrorState from './shared/ErrorState';
 import { getDayIndex, getMinutesFrom7AM } from '../utils/time';
 import ScheduleModal from './ScheduleModal';
 import ScheduleTooltip from './ScheduleTooltip';
@@ -263,27 +265,29 @@ function Schedule() {
       // Convert canvas to blob and download
       canvas.toBlob((blob) => {
         if (!blob) {
-          throw new Error('Failed to generate image');
+          setIsDownloading(false);
+          alert('Failed to generate image. Please try again.');
+          return;
         }
 
         // Create download link
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        
+
         // Generate filename
         const sanitizedYear = yearName.replace(/[^a-z0-9]/gi, '_');
         const sanitizedTerm = termName.replace(/[^a-z0-9]/gi, '_');
         const timestamp = new Date().toISOString().split('T')[0];
         link.download = `Schedule_${sanitizedYear}_${sanitizedTerm}_${timestamp}.png`;
-        
+
         link.href = url;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         // Clean up
         URL.revokeObjectURL(url);
-        
+
         setIsDownloading(false);
       }, 'image/png');
 
@@ -364,12 +368,26 @@ function Schedule() {
           block.style.top = offsetPx + 'px';
           block.style.height = heightPx + 'px';
 
-          block.innerHTML = `
-            <div class="class-code">${course.courseCode}</div>
-            <div class="class-section">${course.section || 'N/A'}</div>
-            <div class="class-name">${course.description}</div>
-            <div class="class-room">📍 ${sched.roomName}</div>
-          `;
+          const codeDiv = document.createElement('div');
+          codeDiv.className = 'class-code';
+          codeDiv.textContent = course.courseCode;
+
+          const sectionDiv = document.createElement('div');
+          sectionDiv.className = 'class-section';
+          sectionDiv.textContent = course.section || 'N/A';
+
+          const nameDiv = document.createElement('div');
+          nameDiv.className = 'class-name';
+          nameDiv.textContent = course.description;
+
+          const roomDiv = document.createElement('div');
+          roomDiv.className = 'class-room';
+          roomDiv.textContent = `📍 ${sched.roomName}`;
+
+          block.appendChild(codeDiv);
+          block.appendChild(sectionDiv);
+          block.appendChild(nameDiv);
+          block.appendChild(roomDiv);
 
           if (isMobileDevice()) {
             block.addEventListener('click', (e) => {
@@ -395,9 +413,9 @@ function Schedule() {
   // Render loading state
   if (loading) {
     return (
-    <div className="section">
-    <h2 className="section-title">📅 My Class Schedule</h2>
-        <div dangerouslySetInnerHTML={{ __html: createLoadingHTML('Loading schedule...') }} />
+      <div className="section">
+        <h2 className="section-title">📅 My Class Schedule</h2>
+        <LoadingState message="Loading schedule..." />
       </div>
     );
   }
@@ -407,7 +425,7 @@ function Schedule() {
     return (
       <div className="section">
         <h2 className="section-title">📅 My Class Schedule</h2>
-        <div dangerouslySetInnerHTML={{ __html: createErrorHTML(error) }} />
+        <ErrorState message={error} onRetry={loadSchedules} />
       </div>
     );
   }

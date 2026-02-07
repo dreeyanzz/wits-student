@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { ApiService } from '../services/api';
 import { getItem } from '../services/storage';
-import { createLoadingHTML, createErrorHTML, isMobileDevice } from '../utils/dom';
+import { isMobileDevice } from '../utils/dom';
+import LoadingState from './shared/LoadingState';
+import ErrorState from './shared/ErrorState';
 import { CONFIG } from '../config/constants';
 import '../styles/CourseOfferings.css';
 
@@ -24,6 +26,7 @@ function CourseOfferings() {
   const [showScrollHint, setShowScrollHint] = useState(true);
   
   const loadCounterRef = useRef(0);
+  const searchCounterRef = useRef(0);
   const searchRef = useRef(null);
   const dropdownRef = useRef(null);
 
@@ -158,18 +161,21 @@ function CourseOfferings() {
     setSearchTerm(`${course.courseCode} - ${course.courseName}`);
     setShowDropdown(false);
     setSelectedIndex(-1);
+    searchOfferings(course);
   };
 
   /**
    * Searches for course offerings
+   * @param {Object} [course] - Course to search for (defaults to selectedCourse)
    */
-  const searchOfferings = async () => {
-    if (!selectedCourse) {
+  const searchOfferings = async (course) => {
+    const targetCourse = course || selectedCourse;
+    if (!targetCourse) {
       setOfferingsError('Please select a course from the search box first');
       return;
     }
 
-    const mySearchId = ++loadCounterRef.current;
+    const mySearchId = ++searchCounterRef.current;
     setSearchingOfferings(true);
     setOfferingsError(null);
     setOfferings([]);
@@ -195,13 +201,13 @@ function CourseOfferings() {
         idAcademicYear: currentAcademicYearId,
         idTerm: currentTermId,
         idSectionBlock: null,
-        idCourse: selectedCourse.idCourse,
+        idCourse: targetCourse.idCourse,
         courseTitle: '',
       };
 
       const result = await ApiService.post(endpoint, payload, CONFIG.BASE_URL);
 
-      if (mySearchId !== loadCounterRef.current) return;
+      if (mySearchId !== searchCounterRef.current) return;
 
       if (result.status === 200 && result.data?.items) {
         const offeringsList = result.data.items.courseOfferings || [];
@@ -214,7 +220,7 @@ function CourseOfferings() {
       }
     } catch (err) {
       console.error('Error searching offerings:', err);
-      if (mySearchId === loadCounterRef.current) {
+      if (mySearchId === searchCounterRef.current) {
         setOfferingsError(err.message || 'Failed to search offerings');
         setSearchingOfferings(false);
       }
@@ -312,7 +318,7 @@ function CourseOfferings() {
     return (
       <div className="section">
         <h2 className="section-title">🔍 Course Offerings</h2>
-        <div dangerouslySetInnerHTML={{ __html: createLoadingHTML('Loading courses...') }} />
+        <LoadingState message="Loading courses..." />
       </div>
     );
   }
@@ -322,7 +328,7 @@ function CourseOfferings() {
     return (
       <div className="section">
         <h2 className="section-title">🔍 Course Offerings</h2>
-        <div dangerouslySetInnerHTML={{ __html: createErrorHTML(error) }} />
+        <ErrorState message={error} onRetry={loadCourses} />
       </div>
     );
   }
@@ -371,22 +377,15 @@ function CourseOfferings() {
           </div>
         </div>
 
-        <button 
-          className="btn-success"
-          onClick={searchOfferings}
-          disabled={!selectedCourse || searchingOfferings}
-        >
-          {searchingOfferings ? '🔍 Searching...' : '🔍 Search Offerings'}
-        </button>
       </div>
 
       {/* Offerings Display */}
       {searchingOfferings && (
-        <div dangerouslySetInnerHTML={{ __html: createLoadingHTML('Loading course offerings...') }} />
+        <LoadingState message="Loading course offerings..." />
       )}
 
       {offeringsError && (
-        <div dangerouslySetInnerHTML={{ __html: createErrorHTML(offeringsError) }} />
+        <ErrorState message={offeringsError} onRetry={searchOfferings} />
       )}
 
       {!searchingOfferings && !offeringsError && offerings.length > 0 && (

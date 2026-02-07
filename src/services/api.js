@@ -42,15 +42,22 @@ export class ApiService {
     const headers = {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken() || "undefined"}`,
       "X-Origin": "studentportal",
       "X-HMAC-Nonce": nonce,
       "X-HMAC-Salt": salt,
       "X-HMAC-Signature": signature,
     };
 
+    const token = getToken();
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     // Use CORS proxy
     const proxiedUrl = CONFIG.PROXY_URL + encodeURIComponent(fullTargetUrl);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
 
     try {
       const response = await fetch(proxiedUrl, {
@@ -58,6 +65,7 @@ export class ApiService {
         mode: "cors",
         headers,
         body,
+        signal: controller.signal,
       });
 
       const contentType = response.headers.get("content-type");
@@ -120,6 +128,15 @@ export class ApiService {
         throw error;
       }
 
+      // Timeout errors
+      if (error.name === 'AbortError') {
+        throw new ApiError(
+          "Request timed out. Please try again.",
+          0,
+          error,
+        );
+      }
+
       // Network errors
       if (error instanceof TypeError && error.message.includes("fetch")) {
         throw new ApiError(
@@ -131,6 +148,8 @@ export class ApiService {
 
       // Generic error
       throw new ApiError(error.message || "Request failed", 0, error);
+    } finally {
+      clearTimeout(timeoutId);
     }
   }
 
