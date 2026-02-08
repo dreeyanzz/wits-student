@@ -4,15 +4,17 @@
  */
 
 import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
 import { AuthService } from '../services/auth';
 import citLogo from '../assets/cit-logo.png';
 import '../styles/Login.css';
 import '../styles/FlipTransition.css';
+import '../styles/DatePicker.css';
 
 const Login = ({ onLoginSuccess }) => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
-  const [birthdate, setBirthdate] = useState('');
+  const [birthdate, setBirthdate] = useState(null); // Changed to null for DatePicker
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -114,8 +116,8 @@ const Login = ({ onLoginSuccess }) => {
   /**
    * Handles birthdate input change
    */
-  const handleBirthdateChange = (e) => {
-    setBirthdate(e.target.value);
+  const handleBirthdateChange = (date) => {
+    setBirthdate(date);
     if (error || success) clearError();
   };
 
@@ -126,7 +128,19 @@ const Login = ({ onLoginSuccess }) => {
     e.preventDefault();
 
     const trimmedUserId = userId.trim();
-    const trimmedBirthdate = birthdate.trim();
+    
+    // Convert Date object to YYYY-MM-DD string
+    if (!birthdate) {
+      setError('Please select your birthdate.');
+      setBirthdateError(true);
+      setLoading(false);
+      return;
+    }
+    
+    const year = birthdate.getFullYear();
+    const month = String(birthdate.getMonth() + 1).padStart(2, '0');
+    const day = String(birthdate.getDate()).padStart(2, '0');
+    const trimmedBirthdate = `${year}-${month}-${day}`;
 
     clearError();
     setLoading(true);
@@ -138,7 +152,7 @@ const Login = ({ onLoginSuccess }) => {
         setSuccess(result.message || 'Password reset is successful. Please check your email.');
         // Clear form
         setUserId('');
-        setBirthdate('');
+        setBirthdate(null);
       }
       
     } catch (error) {
@@ -286,14 +300,19 @@ const Login = ({ onLoginSuccess }) => {
                   {/* Back - Birthdate Field */}
                   <div className="field-flip-back">
                     <label htmlFor="birthdate">Birthdate</label>
-                    <input
-                      type="date"
-                      id="birthdate"
-                      value={birthdate}
+                    <DatePicker
+                      selected={birthdate}
                       onChange={handleBirthdateChange}
+                      dateFormat="MMMM d, yyyy"
+                      placeholderText="Select your birthdate"
                       disabled={loading || !showForgotPassword}
-                      required={showForgotPassword}
-                      className={birthdateError ? 'form-input--error' : ''}
+                      className={`custom-datepicker-input ${birthdateError ? 'error' : ''}`}
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      maxDate={new Date()}
+                      yearDropdownItemNumber={100}
+                      scrollableYearDropdown
                     />
                     <div className="form-hint">Select your date of birth</div>
                   </div>

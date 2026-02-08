@@ -1,0 +1,195 @@
+/* ===================================================================
+   REACT DATEPICKER CUSTOM STYLING
+   Matches CIT-U theme and login card design
+   =================================================================== */
+
+/* Import the base datepicker styles */
+@import 'react-datepicker/dist/react-datepicker.css';
+
+/* Wrapper for the datepicker input */
+.custom-datepicker-wrapper {
+  width: 100%;
+}
+
+/* Ensure react-datepicker internal wrappers stretch to full width */
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  width: 100%;
+  display: block;
+}
+
+/* Style the input to match other form inputs */
+.custom-datepicker-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  background: #f8f9fb;
+  border: 1.5px solid #d5dce3;
+  color: #2c3e50;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.custom-datepicker-input:focus {
+  outline: none;
+  border-color: #7a1a3d;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(122, 26, 61, 0.1);
+}
+
+.custom-datepicker-input.error {
+  border-color: #e74c3c !important;
+  background: #fff5f5 !important;
+}
+
+.custom-datepicker-input.error:focus {
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+.custom-datepicker-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Calendar popup container */
+.react-datepicker {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  border: 1.5px solid #d5dce3;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(122, 26, 61, 0.15);
+}
+
+/* Calendar header */
+.react-datepicker__header {
+  background-color: #7a1a3d;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding-top: 12px;
+}
+
+/* Current month/year text */
+.react-datepicker__current-month {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+/* Day names (Mon, Tue, etc) */
+.react-datepicker__day-name {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 12px;
+  width: 2rem;
+  line-height: 2rem;
+  margin: 0.2rem;
+}
+
+/* Navigation arrows */
+.react-datepicker__navigation {
+  top: 12px;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #ffffff;
+  border-width: 2px 2px 0 0;
+}
+
+.react-datepicker__navigation:hover *::before {
+  border-color: #f0f0f0;
+}
+
+/* Individual day cells */
+.react-datepicker__day {
+  color: #2c3e50;
+  font-size: 14px;
+  width: 2rem;
+  line-height: 2rem;
+  margin: 0.2rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.react-datepicker__day:hover {
+  background-color: rgba(122, 26, 61, 0.1);
+  color: #7a1a3d;
+}
+
+/* Selected day */
+.react-datepicker__day--selected {
+  background-color: #7a1a3d;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: #5d1430;
+}
+
+/* Keyboard selected day */
+.react-datepicker__day--keyboard-selected {
+  background-color: rgba(122, 26, 61, 0.2);
+  color: #7a1a3d;
+}
+
+/* Today */
+.react-datepicker__day--today {
+  font-weight: 600;
+  color: #7a1a3d;
+}
+
+/* Outside month */
+.react-datepicker__day--outside-month {
+  color: #bdc3c7;
+}
+
+/* Disabled days */
+.react-datepicker__day--disabled {
+  color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.react-datepicker__day--disabled:hover {
+  background-color: transparent;
+}
+
+/* Month/Year dropdowns */
+.react-datepicker__month-select,
+.react-datepicker__year-select {
+  background-color: #ffffff;
+  border: 1px solid #d5dce3;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 14px;
+  color: #2c3e50;
+  cursor: pointer;
+}
+
+.react-datepicker__month-select:focus,
+.react-datepicker__year-select:focus {
+  outline: none;
+  border-color: #7a1a3d;
+}
+
+/* Triangle pointer */
+.react-datepicker__triangle {
+  display: none;
+}
+
+/* Month container */
+.react-datepicker__month-container {
+  background-color: #ffffff;
+}
+
+/* Week */
+.react-datepicker__week {
+  display: flex;
+}
+
+/* Make it work nicely in the flip animation */
+.field-flip-back .custom-datepicker-wrapper {
+  width: 100%;
+}
