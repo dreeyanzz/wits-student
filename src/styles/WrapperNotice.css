@@ -1,0 +1,191 @@
+/* ===================================================================
+   WRAPPER NOTICE — ACKNOWLEDGMENT MODAL
+   Full-screen overlay users must acknowledge before using the app
+   =================================================================== */
+
+.wrapper-notice-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.wrapper-notice-modal {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  animation: wrapperModalSlideUp 0.3s ease;
+}
+
+@keyframes wrapperModalSlideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ---- Header ---- */
+.wrapper-notice-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.wrapper-notice-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.wrapper-notice-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* ---- Body ---- */
+.wrapper-notice-body {
+  margin-bottom: 24px;
+}
+
+.wrapper-notice-intro {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-secondary);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.wrapper-notice-points {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wrapper-notice-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--color-secondary);
+  background: var(--bg-secondary);
+  padding: 12px 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-secondary);
+}
+
+.point-icon {
+  flex-shrink: 0;
+  font-size: 18px;
+  margin-top: 1px;
+}
+
+/* ---- Button ---- */
+.wrapper-notice-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--cit-maroon);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.wrapper-notice-btn:hover {
+  background: var(--cit-maroon-dark);
+}
+
+.wrapper-notice-btn:active {
+  transform: scale(0.98);
+}
+
+/* ===================================================================
+   RESPONSIVE — TABLET
+   =================================================================== */
+@media (max-width: 768px) {
+  .wrapper-notice-modal {
+    padding: 24px;
+  }
+
+  .wrapper-notice-icon {
+    font-size: 40px;
+  }
+
+  .wrapper-notice-title {
+    font-size: 20px;
+  }
+
+  .wrapper-notice-intro {
+    font-size: 13.5px;
+  }
+
+  .wrapper-notice-points li {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+}
+
+/* ===================================================================
+   RESPONSIVE — MOBILE
+   =================================================================== */
+@media (max-width: 480px) {
+  .wrapper-notice-overlay {
+    padding: 12px;
+  }
+
+  .wrapper-notice-modal {
+    padding: 20px;
+  }
+
+  .wrapper-notice-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+
+  .wrapper-notice-title {
+    font-size: 18px;
+  }
+
+  .wrapper-notice-intro {
+    font-size: 13px;
+  }
+
+  .wrapper-notice-points li {
+    font-size: 12.5px;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .point-icon {
+    font-size: 16px;
+  }
+
+  .wrapper-notice-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+}

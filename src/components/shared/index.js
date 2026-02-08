@@ -11,3 +11,4 @@ export { default as SemesterSelector } from './SemesterSelector';
 export { default as ScrollHint } from './ScrollHint';
 export { default as EmptyState } from './EmptyState';
 export { default as SlowConnectionBanner } from './SlowConnectionBanner';
+export { default as WrapperNotice } from './WrapperNotice';

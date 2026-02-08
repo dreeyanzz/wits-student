@@ -9,6 +9,7 @@ import CourseOfferings from './components/CourseOfferings';
 import ChangePassword from './components/ChangePassword';
 import ErrorBoundary from './components/shared/ErrorBoundary';
 import SlowConnectionBanner from './components/shared/SlowConnectionBanner';
+import WrapperNotice from './components/shared/WrapperNotice';
 import { useSlowConnection } from './hooks/useSlowConnection';
 import { AuthService } from './services/auth';
 import { initializeTimeSlots } from './config/constants';
@@ -191,6 +192,7 @@ function App() {
       </header>
 
       <SlowConnectionBanner visible={isConnectionSlow} isOffline={isOffline} />
+      <WrapperNotice />
 
       {/* Quick Actions */}
       <section className="section quick-actions-section">
