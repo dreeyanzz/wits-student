@@ -8,6 +8,8 @@ import Professors from './components/Professors';
 import CourseOfferings from './components/CourseOfferings';
 import ChangePassword from './components/ChangePassword';
 import ErrorBoundary from './components/shared/ErrorBoundary';
+import SlowConnectionBanner from './components/shared/SlowConnectionBanner';
+import { useSlowConnection } from './hooks/useSlowConnection';
 import { AuthService } from './services/auth';
 import { initializeTimeSlots } from './config/constants';
 import './styles/App.css';
@@ -22,6 +24,7 @@ function App() {
   const [overlayText, setOverlayText] = useState('Restoring your session...');
   const [showOverlay, setShowOverlay] = useState(false);
   const [showHamburgerOnScroll, setShowHamburgerOnScroll] = useState(false);
+  const { isConnectionSlow, isOffline } = useSlowConnection();
 
   useEffect(() => {
     // Initialize time slots on app mount
@@ -186,6 +189,8 @@ function App() {
           </button>
         </div>
       </header>
+
+      <SlowConnectionBanner visible={isConnectionSlow} isOffline={isOffline} />
 
       {/* Quick Actions */}
       <section className="section quick-actions-section">

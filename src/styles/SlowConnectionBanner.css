@@ -1,0 +1,64 @@
+/* ===================================================================
+   SLOW CONNECTION BANNER
+   Warning banner for slow network conditions
+   =================================================================== */
+
+.slow-connection-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: #fef3cd;
+  border-bottom: 1px solid var(--status-warning);
+  color: #856404;
+  font-size: 0.85rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+.slow-connection-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+.slow-connection-text {
+  font-weight: 500;
+}
+
+/* Offline variant — red/error styling */
+.slow-connection-banner.offline {
+  background-color: #f8d7da;
+  border-bottom-color: var(--status-error);
+  color: #721c24;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===================================================================
+   RESPONSIVE - TABLET
+   =================================================================== */
+@media (max-width: 768px) {
+  .slow-connection-banner {
+    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-md);
+  }
+}
+
+/* ===================================================================
+   RESPONSIVE - MOBILE
+   =================================================================== */
+@media (max-width: 480px) {
+  .slow-connection-banner {
+    font-size: 0.75rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}

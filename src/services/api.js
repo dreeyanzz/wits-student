@@ -15,6 +15,27 @@ import {
 import { AuthService } from './auth';
 
 export class ApiService {
+  static _listeners = [];
+
+  /**
+   * Registers a callback for request completion timing events
+   * @param {function({duration: number, success: boolean}): void} cb
+   * @returns {function(): void} Unsubscribe function
+   */
+  static onRequestComplete(cb) {
+    this._listeners.push(cb);
+    return () => {
+      this._listeners = this._listeners.filter(l => l !== cb);
+    };
+  }
+
+  /** @private */
+  static _notifyListeners(data) {
+    this._listeners.forEach(cb => {
+      try { cb(data); } catch (_) { /* ignore listener errors */ }
+    });
+  }
+
   /**
    * Makes an authenticated API call
    * @param {string} method - HTTP method
@@ -58,6 +79,8 @@ export class ApiService {
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
+
+    const startTime = Date.now();
 
     try {
       const response = await fetch(proxiedUrl, {
@@ -116,6 +139,8 @@ export class ApiService {
         }
       }
 
+      this._notifyListeners({ duration: Date.now() - startTime, success: response.ok });
+
       // Return response with status
       return {
         status: response.status,
@@ -125,11 +150,13 @@ export class ApiService {
     } catch (error) {
       // Re-throw ApiError
       if (error instanceof ApiError) {
+        this._notifyListeners({ duration: Date.now() - startTime, success: false });
         throw error;
       }
 
       // Timeout errors
       if (error.name === 'AbortError') {
+        this._notifyListeners({ duration: Date.now() - startTime, success: false });
         throw new ApiError(
           "Request timed out. Please try again.",
           0,
@@ -139,6 +166,7 @@ export class ApiService {
 
       // Network errors
       if (error instanceof TypeError && error.message.includes("fetch")) {
+        this._notifyListeners({ duration: Date.now() - startTime, success: false });
         throw new ApiError(
           "Network error. Please check your connection.",
           0,
@@ -147,6 +175,7 @@ export class ApiService {
       }
 
       // Generic error
+      this._notifyListeners({ duration: Date.now() - startTime, success: false });
       throw new ApiError(error.message || "Request failed", 0, error);
     } finally {
       clearTimeout(timeoutId);

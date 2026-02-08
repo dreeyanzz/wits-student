@@ -4,3 +4,4 @@
  */
 
 export { useScrollHint } from './useScrollHint';
+export { useSlowConnection } from './useSlowConnection';
