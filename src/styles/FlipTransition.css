@@ -1,0 +1,99 @@
+/* ===================================================================
+   3D FLIP TRANSITION - FIELD ONLY
+   =================================================================== */
+
+.field-flip-container {
+  perspective: 1000px;
+  width: 100%;
+  position: relative;
+}
+
+.field-flip-container.flipped .field-flipper {
+  transform: rotateX(-180deg);
+}
+
+.field-flipper {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease-in-out, height 0.6s ease-in-out;
+}
+
+.field-flip-front,
+.field-flip-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  width: 100%;
+}
+
+.field-flip-front {
+  position: relative;
+  z-index: 2;
+  transform: rotateX(0deg);
+}
+
+.field-flip-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: rotateX(180deg);
+}
+
+/* Ensure labels and inputs look consistent */
+.field-flip-front label,
+.field-flip-back label {
+  display: block;
+  margin-bottom: 8px;
+  color: #34495e;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.field-flip-back input[type="date"] {
+  width: 100%;
+  padding: 12px 14px;
+  background: #f8f9fb;
+  border: 1.5px solid #d5dce3;
+  color: #2c3e50;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.field-flip-back input[type="date"]:focus {
+  outline: none;
+  border-color: #7a1a3d;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(122, 26, 61, 0.1);
+}
+
+.field-flip-back input[type="date"].form-input--error {
+  border-color: #e74c3c !important;
+  background: #fff5f5 !important;
+}
+
+.field-flip-back input[type="date"].form-input--error:focus {
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+.field-flip-back input[type="date"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.field-flip-back .form-hint {
+  font-size: 12px;
+  color: #7f8c8d;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* Height animation for the flipper */
+.field-flip-container:not(.flipped) .field-flipper {
+  height: 82px; /* Password field height */
+}
+
+.field-flip-container.flipped .field-flipper {
+  height: 108px; /* Birthdate field height (includes hint) */
+}

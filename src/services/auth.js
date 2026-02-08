@@ -224,6 +224,56 @@ export class AuthService {
   }
 
   /**
+   * Sends password reset request
+   * @param {string} studentId - Student ID
+   * @param {string} birthdate - Birthdate in YYYY-MM-DD format
+   * @returns {Promise<{success: boolean, message: string}>}
+   */
+  static async forgotPassword(studentId, birthdate) {
+    // Validate inputs
+    Validator.required(studentId, 'Student ID');
+    Validator.required(birthdate, 'Birthdate');
+    Validator.studentId(studentId);
+
+    // Convert birthdate to ISO format with time
+    let formattedBirthdate;
+    try {
+      const date = new Date(birthdate);
+      if (isNaN(date.getTime())) {
+        throw new Error('Invalid date format');
+      }
+      formattedBirthdate = date.toISOString();
+    } catch (error) {
+      throw new AuthenticationError('Invalid birthdate format. Please use a valid date.');
+    }
+
+    // Make forgot password API call
+    const result = await ApiService.post(
+      '/api/user/student/forgotpassword',
+      { 
+        studentID: studentId, 
+        studentBirthDate: formattedBirthdate 
+      },
+      CONFIG.LOGIN_URL,
+      { isForgotPasswordRequest: true }
+    );
+
+    // Check for successful request
+    if (result.status === 404) {
+      throw new AuthenticationError('Record does not exist. Please check your Student ID and birthdate.');
+    }
+
+    if (result.status !== 200) {
+      throw new AuthenticationError('Password reset failed. Please try again.');
+    }
+
+    return {
+      success: true,
+      message: result.data?.message || 'Password reset is successful. Please check your email.'
+    };
+  }
+
+  /**
    * Handles API errors (for use by components)
    * @param {Error} error - The error object
    */
