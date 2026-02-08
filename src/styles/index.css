@@ -120,6 +120,18 @@ code {
   margin-bottom: var(--spacing-xl);
   border-radius: var(--radius-lg);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  animation: section-enter 0.2s ease-out;
+}
+
+@keyframes section-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .section-title {

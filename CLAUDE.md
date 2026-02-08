@@ -41,7 +41,8 @@ Token-based (JWT Bearer). Login flow: validate inputs → POST credentials + cli
 Data-fetching components (Schedule, Grades, etc.) use a `loadCounterRef` pattern: increment a counter before each fetch, and discard the result if the counter has changed by the time the response arrives.
 
 ### Key Directories
-- `src/components/` — Page components and `shared/` reusable UI (ErrorBoundary, ErrorState, LoadingState, SectionHeader, SemesterSelector)
+- `src/components/` — Page components and `shared/` reusable UI (ErrorBoundary, ErrorState, LoadingState, SectionHeader, SemesterSelector, ScrollHint, EmptyState)
+- `src/hooks/` — Custom hooks (useScrollHint for mobile swipe hints)
 - `src/services/` — auth, api, storage (the core service layer)
 - `src/config/constants.js` — API URLs, encryption keys, client secrets, time slots, color palette, day mappings
 - `src/utils/` — crypto (AES/HMAC), validation (studentId/email/password patterns), errors (custom error classes), dom (colors, mobile detection), time (parsing/day conversion)
@@ -49,6 +50,9 @@ Data-fetching components (Schedule, Grades, etc.) use a `loadCounterRef` pattern
 
 ### Configuration
 All secrets and API URLs are hardcoded in `src/config/constants.js` (no `.env` files). This is intentional — they act as app identifiers; real security is server-side via JWT + per-student data scoping.
+
+### Icons
+The app uses native emoji characters as UI icons throughout all components. Inline SVG icons were evaluated and rejected — keep using emojis.
 
 ### Build Optimizations
 Vite config (`vite.config.js`) enables: Terser minification with `drop_console`/`drop_debugger`, manual chunk splitting (components vs services/utils), and CSS code splitting.
