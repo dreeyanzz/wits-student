@@ -4,7 +4,26 @@
 
 **Live demo:** [wits-student.vercel.app](https://wits-student.vercel.app)
 
-![Dashboard Screenshot](docs/screenshot.png)
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><b>Login</b><br/><img src="demo-screenshots/demo-screenshots-1.png" alt="Login"/></td>
+    <td align="center"><b>Reset Password</b><br/><img src="demo-screenshots/demo-screenshots-2.png" alt="Reset Password"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Dashboard</b><br/><img src="demo-screenshots/demo-screenshots-3.png" alt="Dashboard"/></td>
+    <td align="center"><b>Class Schedule</b><br/><img src="demo-screenshots/demo-screenshots-4.png" alt="Class Schedule"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Grades</b><br/><img src="demo-screenshots/demo-screenshots-5.png" alt="Grades"/></td>
+    <td align="center"><b>Professors</b><br/><img src="demo-screenshots/demo-screenshots-6.png" alt="Professors"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Course Offerings</b><br/><img src="demo-screenshots/demo-screenshots-7.png" alt="Course Offerings"/></td>
+    <td align="center"><b>Change Password</b><br/><img src="demo-screenshots/demo-screenshots-8.png" alt="Change Password"/></td>
+  </tr>
+</table>
 
 ---
 
